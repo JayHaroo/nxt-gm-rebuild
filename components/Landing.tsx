@@ -7,7 +7,7 @@ export default function Landing() {
   const [visible, setVisible] = useState(false);
   return (
     <View className="flex-1 items-center justify-center bg-[#121212]">
-      <View className="top-[-200px] p-[110px]">
+      <View className="top-[-90px] p-[110px]">
         <Image source={require('../assets/logo-with-text.png')} className="object-contain" />
       </View>
 
