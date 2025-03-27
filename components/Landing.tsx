@@ -12,7 +12,7 @@ export default function Landing() {
           <Text className="p-3 text-white">Login</Text>
         </Pressable>
 
-        <View className='p-5 items-center'>
+        <View className='items-center mb-5'>
             <Text className="text-white z-10 bg-[#121212] top-3 w-[30px] text-center">OR</Text>
           <View className="w-[200px] border border-white z-0" />
         </View>
