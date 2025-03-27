@@ -1,6 +1,10 @@
 import { View, Text, Image, Pressable } from 'react-native';
+import BottomSheet from './elements/BottomSheet';
+import { useState } from 'react';
+import Login from './elements/Login';
 
 export default function Landing() {
+  const [visible, setVisible] = useState(false);
   return (
     <View className="flex-1 items-center justify-center bg-[#121212]">
       <View className="top-[-200px] p-[110px]">
@@ -8,19 +12,29 @@ export default function Landing() {
       </View>
 
       <View className="flex items-center">
-        <Pressable className="mt-5 w-[160px] items-center rounded-xl bg-green-700">
+        <Pressable className="mt-5 w-[160px] items-center rounded-xl bg-green-700"
+        onPress={() => setVisible(true)}>
           <Text className="p-3 text-white">Login</Text>
         </Pressable>
 
-        <View className='items-center mb-5'>
-            <Text className="text-white z-10 bg-[#121212] top-3 w-[30px] text-center">OR</Text>
-          <View className="w-[200px] border border-white z-0" />
+        <View className="mb-5 items-center">
+          <Text className="top-3 z-10 w-[30px] bg-[#121212] text-center text-white">OR</Text>
+          <View className="z-0 w-[200px] border border-white" />
         </View>
 
         <Pressable>
           <Text className="text-white">Join the community</Text>
         </Pressable>
       </View>
+
+      {visible && (
+        <BottomSheet visible={visible} onClose={() => setVisible(false)}>
+          <View className="items-center">
+            <View className="mb-3 w-[100px] border-2 border-gray-400" />
+            <Login />
+          </View>
+        </BottomSheet>
+      )}
     </View>
   );
 }
