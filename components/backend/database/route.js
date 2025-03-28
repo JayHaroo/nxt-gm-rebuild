@@ -1,22 +1,32 @@
 import { MongoClient } from "mongodb";
 
-export async function GET(req) {
-    const client = new MongoClient(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+export async function POST(req) {
+  const { email, password } = await req.json();
 
-    try {
-        await client.connect();
+  if (!email || !password) {
+    return new Response(JSON.stringify({ message: "Missing email or password" }), { status: 400 });
+  }
 
-        const database = client.db("nxtgm");
-        const collection = database.collection("accounts");
-        const allData = await collection.find({}).toArray();
+  const client = new MongoClient(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-        return new Response(JSON.stringify(allData), { status: 200 });
-    } catch (error) {
-        return new Response(JSON.stringify({ message: "Something went wrong!" }), { status: 500 });
-    } finally {
-        await client.close();
+  try {
+    await client.connect();
+    const database = client.db("nxtgm");
+    const collection = database.collection("accounts");
+
+    const user = await collection.findOne({ email });
+
+    if (!user || user.password !== password) {
+      return new Response(JSON.stringify({ message: "Invalid email or password" }), { status: 401 });
     }
+
+    return new Response(JSON.stringify({ message: "Login successful", name: user.name }), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ message: "Something went wrong!" }), { status: 500 });
+  } finally {
+    await client.close();
+  }
 }
