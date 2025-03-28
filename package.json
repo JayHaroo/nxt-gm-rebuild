@@ -11,6 +11,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "expo": "^52.0.41",
     "expo-status-bar": "~2.0.1",
     "express": "^4.21.2",
