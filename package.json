@@ -4,11 +4,12 @@
   "scripts": {
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "start": "expo start",
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "start": "concurrently \"npm run backend\" \"npm run android\"",
+    "backend": "node components/backend/server.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -28,6 +29,7 @@
     "@types/react": "~18.3.12",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
+    "concurrently": "^9.1.2",
     "eslint": "^8.57.0",
     "eslint-config-universe": "^12.0.1",
     "prettier": "^3.2.5",

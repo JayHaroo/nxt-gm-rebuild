@@ -69,8 +69,8 @@ app.get('/api/login', async (req, res) => {
     let { username, password } = req.body;
 
     // Use test values for debugging
-    username = username || "test";
-    password = password || "test";
+    username = username;
+    password = password;
 
     console.log("🔍 Received Username:", username);
     console.log("🔍 Received Password:", password);
