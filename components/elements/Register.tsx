@@ -17,7 +17,7 @@ export default function Register() {
                 className="mb-3 w-[250px] rounded-xl border-2 border-black p-3"
             />
 
-            <Pressable className="mt-5 w-[250px] items-center rounded-xl bg-green-700">
+            <Pressable className="w-[200px] items-center rounded-xl bg-green-700">
                 <Text className="p-3 text-white">Register</Text>
             </Pressable>
         </View>
