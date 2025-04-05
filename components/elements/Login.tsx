@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
-  // Change 'localhost' to your machine's IP
-  const SERVER_URL = 'http://192.168.56.1:3000/api/login'; // Replace with your local IP
+
+  const SERVER_URL = 'http://192.168.56.1:3000/api/login'; // Replace with your IP
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!username || !password) {
       Alert.alert('Error', 'Please enter email and password');
       return;
     }
@@ -20,17 +19,19 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json();
-      console.log('Response:', data);
-
-      if (response.ok) {
-        Alert.alert('Success', data.message);
-      } else {
-        Alert.alert('Login Failed', data.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        Alert.alert('Login Failed', errorData.message || 'Invalid credentials');
+        return;
       }
+
+      const data = await response.json();
+      console.log('Login success:', data);
+      Alert.alert('Success', data.message || 'Login successful');
+
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Error', 'Could not connect to the server');
@@ -46,8 +47,8 @@ export default function Login() {
         className="mb-3 w-[250px] rounded-xl border-2 border-black p-3"
         keyboardType="email-address"
         autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
+        value={username}
+        onChangeText={setUsername}
       />
       <TextInput
         placeholder="Password"
