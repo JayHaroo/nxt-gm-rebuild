@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   const SERVER_URL = 'http://192.168.56.1:3000/api/login'; // Replace with your IP
 
@@ -31,6 +33,7 @@ export default function Login() {
       const data = await response.json();
       console.log('Login success:', data);
       Alert.alert('Success', data.message || 'Login successful');
+      navigation.navigate('Home'); // Navigate to the home screen on success
 
     } catch (error) {
       console.error('Login error:', error);
@@ -59,8 +62,7 @@ export default function Login() {
       />
       <Pressable
         className="w-[200px] items-center rounded-xl bg-green-700"
-        onPress={handleLogin}
-      >
+        onPress={handleLogin}>
         <Text className="p-3 text-white">Login</Text>
       </Pressable>
     </View>
