@@ -35,7 +35,7 @@ export default function Home() {
           <View key={index} className="mb-4 p-4 bg-gray-800 rounded">
             <Text className="text-white">{post.title}</Text>
             <Text className="text-gray-400">{post.desc}</Text>
-            <Text className="text-gray-400">Posted By {post.author}</Text>
+            <Text className="text-gray-400">Posted By {post.author?.username}</Text>
           </View>
         ))}
       </View>

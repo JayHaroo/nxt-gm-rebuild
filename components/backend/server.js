@@ -96,7 +96,17 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/feed', async (req, res) => {
   try {
     const feed = await feedCollection.find({}).toArray();
-    res.json(feed);
+
+    // Map through posts and attach the author's username
+    const enrichedFeed = await Promise.all(feed.map(async (post) => {
+      const author = await accountsCollection.findOne({ _id: post.author });
+      return {
+        ...post,
+        author: author ? { username: author.username } : null
+      };
+    }));
+
+    res.json(enrichedFeed);
   } catch (error) {
     console.error('❌ Feed error:', error);
     res.status(500).json({ message: 'Something went wrong' });
