@@ -37,8 +37,8 @@ export default function Home() {
     <View className="flex-1 items-center justify-center bg-[#121212]">
       <View className="mt-5 w-full px-4">
         {posts.map((post, index) => (
-          <View key={index} className="mb-4 p-4 bg-gray-800 rounded">
-            <Text className="text-white">{post.title}</Text>
+          <View key={index} className="mb-4 p-4 bg-[#303030] rounded-xl">
+            <Text className="text-white font-bold text-[20px]">{post.title}</Text>
             <Text className="text-gray-400">{post.desc}</Text>
             <Text className="text-gray-400">Posted By {post.author?.username}</Text>
           </View>
