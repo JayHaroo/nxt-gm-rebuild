@@ -26,7 +26,10 @@ export default function Home() {
   return (
     <>
     <View className="flex-row bg-[#121212] items-center justify-between px-4 py-2 pt-10">
+      <View className="flex-row items-center">
+      <Image source={require("../../assets/logo.png")} className="object-contain h-[8px] w-[100px]" />
       <Text className="text-white p-3 mr-5">Welcome!</Text>
+      </View>
       <Pressable onPress={goBack} className="bg-blue-500 rounded items-center">
         <Text className="text-white p-3">Go Back</Text>
       </Pressable>
