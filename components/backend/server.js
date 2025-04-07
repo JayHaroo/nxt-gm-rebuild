@@ -18,14 +18,15 @@ const client = new MongoClient(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
 });
 
-let database, collection;
+let accountsCollection, feedCollection;
 
 // Connect to MongoDB
 async function connectDB() {
   try {
     await client.connect();
-    database = client.db('nxtgm');
-    collection = database.collection('accounts');
+    const database = client.db('nxtgm');
+    accountsCollection = database.collection('accounts');
+    feedCollection = database.collection('feed');
     console.log('✅ Connected to MongoDB');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
@@ -53,7 +54,7 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ message: 'Username already exists' });
     }
 
-    await collection.insertOne({ username, password });
+    await accountsCollection.insertOne({ username, password });
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -74,7 +75,7 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
-    const user = await collection.findOne({ username });
+    const user = await accountsCollection.findOne({ username });
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
@@ -88,6 +89,16 @@ app.post('/api/login', async (req, res) => {
     res.json({ message: 'Login successful', username: user.username });
   } catch (error) {
     console.error('❌ Login error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+app.get('/api/feed', async (req, res) => {
+  try {
+    const feed = await feedCollection.find({}).toArray();
+    res.json(feed);
+  } catch (error) {
+    console.error('❌ Feed error:', error);
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
