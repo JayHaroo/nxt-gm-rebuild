@@ -86,7 +86,11 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    res.json({ message: 'Login successful', username: user.username });
+    res.json({
+      message: 'Login successful',
+      userId: user._id,
+      username: user.username
+    });    
   } catch (error) {
     console.error('❌ Login error:', error);
     res.status(500).json({ message: 'Something went wrong' });
@@ -110,6 +114,24 @@ app.get('/api/feed', async (req, res) => {
   } catch (error) {
     console.error('❌ Feed error:', error);
     res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+const { ObjectId } = require('mongodb');
+
+app.get('/api/user/:id', async (req, res) => {
+  try {
+    const id = new ObjectId(req.params.id);
+    const user = await accountsCollection.findOne({ _id: id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ username: user.username });
+  } catch (error) {
+    console.error('❌ Fetch user error:', error);
+    res.status(500).json({ message: 'Failed to fetch user' });
   }
 });
 

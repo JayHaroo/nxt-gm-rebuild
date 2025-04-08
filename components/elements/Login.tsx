@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [userid, setUserId] = useState('');
   const navigation = useNavigation();
 
   const SERVER_URL = 'http://192.168.56.1:3000/api/login'; // Replace with your IP
@@ -14,7 +15,7 @@ export default function Login() {
       Alert.alert('Error', 'Please enter email and password');
       return;
     }
-
+  
     try {
       const response = await fetch(SERVER_URL, {
         method: 'POST',
@@ -23,18 +24,24 @@ export default function Login() {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         Alert.alert('Login Failed', errorData.message || 'Invalid credentials');
         return;
       }
-
+  
       const data = await response.json();
       console.log('Login success:', data);
+  
       Alert.alert('Success', data.message || 'Login successful');
-      navigation.navigate('Home'); // Navigate to the home screen on success
-
+  
+      // 👇 Pass userId and username to Home screen
+      navigation.navigate('Home', {
+        userId: data.userId,
+        username: data.username
+      });
+  
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Error', 'Could not connect to the server');
