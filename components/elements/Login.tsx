@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userid, setUserId] = useState('');
   const navigation = useNavigation();
 
   const SERVER_URL = 'http://192.168.56.1:3000/api/login'; // Replace with your IP
@@ -33,14 +32,11 @@ export default function Login() {
   
       const data = await response.json();
       console.log('Login success:', data);
+      console.log('Username:', data?.username);
   
       Alert.alert('Success', data.message || 'Login successful');
   
-      // 👇 Pass userId and username to Home screen
-      navigation.navigate('Home', {
-        userId: data.userId,
-        username: data.username
-      });
+      navigation.navigate('Home', { userid: data?.username });
   
     } catch (error) {
       console.error('Login error:', error);
