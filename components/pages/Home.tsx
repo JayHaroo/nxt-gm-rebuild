@@ -35,8 +35,11 @@ export default function Home() {
           />
           <Text className="mr-5 p-3 text-white">Welcome! {username ? username : 'Loading...'}</Text>
         </View>
-        <Pressable onPress={goBack} className="items-center rounded bg-blue-500">
+        <Pressable onPress={goBack} className="items-center rounded bg-green-700 mr-2">
           <Text className="p-3 text-white">Go Back</Text>
+        </Pressable>
+        <Pressable onPress={goBack} className="items-center rounded bg-green-700">
+          <Text className="p-3 text-white">+</Text>
         </Pressable>
       </View>
 
