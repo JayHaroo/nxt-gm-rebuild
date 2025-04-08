@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const route = useRoute();
-  const username = route.params?.userid ?? "User";
+  const username = route.params?.username ?? "User";
+  const userid = route.params?.userid ?? "User";
   const navigation = useNavigation();
 
   const [posts, setPosts] = useState([]);
@@ -38,7 +39,7 @@ export default function Home() {
         <Pressable onPress={goBack} className="items-center rounded bg-green-700 mr-2">
           <Text className="p-3 text-white">Go Back</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("Create")} className="items-center rounded bg-green-700">
+        <Pressable onPress={() => navigation.navigate("Create", {userid: userid})} className="items-center rounded bg-green-700">
           <Text className="p-3 text-white">+</Text>
         </Pressable>
       </View>

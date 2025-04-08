@@ -37,7 +37,7 @@ export default function Login() {
   
       Alert.alert('Success', data.message || 'Login successful');
   
-      navigation.navigate('Home', { userid: data?.username });
+      navigation.navigate('Home', { username: data?.username, userid: data?.userId });
   
     } catch (error) {
       console.error('Login error:', error);
