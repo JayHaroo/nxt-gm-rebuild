@@ -33,6 +33,7 @@ export default function Login() {
       const data = await response.json();
       console.log('Login success:', data);
       console.log('Username:', data?.username);
+      console.log('userId:', data?.userId); 
   
       Alert.alert('Success', data.message || 'Login successful');
   
