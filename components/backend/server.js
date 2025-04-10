@@ -132,17 +132,17 @@ app.get('/api/feed', async (req, res) => {
 
 // Upload post
 app.post('/api/upload', async (req, res) => {
-  const { title, content, author } = req.body;
+  const { author, title, desc } = req.body;
 
-  if (!title || !content || !author) {
+  if (!author || !title || !desc) {
     return res.status(400).json({ message: 'Title, content, and author are required' });
   }
 
   try {
     const post = {
+      author: new ObjectId(author), // Convert author to ObjectId
       title,
-      content,
-      author
+      desc // Make sure to use 'content' instead of 'desc'
     };
 
     await feedCollection.insertOne(post);
@@ -152,6 +152,7 @@ app.post('/api/upload', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
+
 
 // Start server
 app.listen(port, () => {
