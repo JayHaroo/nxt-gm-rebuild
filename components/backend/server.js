@@ -2,17 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 3000;
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
-// MongoDB Connection
 const client = new MongoClient(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -20,7 +19,6 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 
 let accountsCollection, feedCollection;
 
-// Connect to MongoDB
 async function connectDB() {
   try {
     await client.connect();
@@ -35,12 +33,12 @@ async function connectDB() {
 }
 connectDB();
 
-// Test Route
+// Test route
 app.get('/', (req, res) => {
   res.send('✅ Server is running');
 });
 
-// Register Route
+// Register
 app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
 
@@ -49,7 +47,7 @@ app.post('/api/register', async (req, res) => {
   }
 
   try {
-    const existingUser = await collection.findOne({ username });
+    const existingUser = await accountsCollection.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists' });
     }
@@ -63,12 +61,9 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// ✅ FIXED Login Route — Now POST + Secure password check
+// Login
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
-
-  console.log('🔍 Received Username:', username);
-  console.log('🔍 Received Password:', password);
 
   if (!username || !password) {
     return res.status(400).json({ message: 'Username and password are required' });
@@ -76,20 +71,14 @@ app.post('/api/login', async (req, res) => {
 
   try {
     const user = await accountsCollection.findOne({ username });
-
-    if (!user) {
+    if (!user || user.password !== password) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Compare plain text passwords directly (⚠️ not safe for production)
-    if (user.password !== password) {
-      return res.status(401).json({ message: 'Invalid username or password' });
-    }
-
-    res.json({ 
-      message: 'Login successful', 
+    res.json({
+      message: 'Login successful',
       username: user.username,
-      userId: user._id.toString() // 👈 include the user ID
+      userId: user._id.toString(),
     });
   } catch (error) {
     console.error('❌ Login error:', error);
@@ -97,29 +86,42 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-app.get('/api/accounts', async (req, res) => {
+// Accounts (Get account by username)
+app.post('/api/accounts', async (req, res) => {
   const { username } = req.body;
   try {
-    const accounts = await accountsCollection.findOne({username}).toArray();
-    res.json(accounts);
+    const account = await accountsCollection.findOne({ username });
+    res.json(account);
   } catch (error) {
     console.error('❌ Accounts error:', error);
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
+// Feed
 app.get('/api/feed', async (req, res) => {
   try {
     const feed = await feedCollection.find({}).toArray();
 
-    // Map through posts and attach the author's username
-    const enrichedFeed = await Promise.all(feed.map(async (post) => {
-      const author = await accountsCollection.findOne({ _id: post.author });
-      return {
-        ...post,
-        author: author ? { username: author.username } : null
-      };
-    }));
+    const enrichedFeed = await Promise.all(
+      feed.map(async (post) => {
+        let authorInfo = null;
+
+        try {
+          const authorObjectId = new ObjectId(post.author);
+          const author = await accountsCollection.findOne({ _id: authorObjectId });
+          authorInfo = author ? { username: author.username } : null;
+        } catch (err) {
+          // Invalid ObjectId — skip author enrichment
+          authorInfo = null;
+        }
+
+        return {
+          ...post,
+          author: authorInfo,
+        };
+      })
+    );
 
     res.json(enrichedFeed);
   } catch (error) {
@@ -128,6 +130,7 @@ app.get('/api/feed', async (req, res) => {
   }
 });
 
+// Upload post
 app.post('/api/upload', async (req, res) => {
   const { title, content, author } = req.body;
 
@@ -136,15 +139,21 @@ app.post('/api/upload', async (req, res) => {
   }
 
   try {
-    await feedCollection.insertOne({ title, content, author });
-    res.status(201).json({ message: 'Post uploaded successfully' });
+    const post = {
+      title,
+      content,
+      author: new ObjectId(author)
+    };
+
+    await feedCollection.insertOne(post);
+    res.status(201).json({ message: 'Post uploaded successfully', title });
   } catch (error) {
     console.error('❌ Upload error:', error);
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
-// Start Server
+// Start server
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
 });

@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, Image } from 'react-native';
+import { View, Text, Pressable, TextInput, Image, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -13,12 +13,11 @@ export default function Create() {
   const [description, setDescription] = useState('');
   const [imageUri, setImageUri] = useState(null);
 
-  // Request media library permissions
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        alert('Permission to access media library is required!');
+        Alert.alert('Permission Required', 'Permission to access media library is required!');
       }
     })();
   }, []);
@@ -36,31 +35,40 @@ export default function Create() {
   };
 
   const SERVER_URL = 'http://192.168.56.1:3000/api/upload';
+
   const handlePost = async () => {
     if (!title || !description) {
-      alert('Please fill in all fields.');
+      Alert.alert('Missing Info', 'Please fill in all fields.');
       return;
     }
+
+    const postData = {
+      title: title,
+      content: description,
+      author: userid,
+    };
+
     try {
       const response = await fetch(SERVER_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, description, author: userid }),
+        body: JSON.stringify(postData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        Alert.alert('Register Failed', errorData.message || 'Invalid credentials');
+        Alert.alert('Post Failed', errorData.message || 'Something went wrong');
         return;
       }
 
       const data = await response.json();
-      console.log('Register success:', data);
-      Alert.alert('Success', data.message || 'Welcome to the community!');
+      console.log('Posted:', data.title);
+      Alert.alert('Success', data.message || 'Uploaded successfully!');
     } catch (error) {
       console.error('Error creating post:', error);
+      Alert.alert('Error', 'Failed to create post. Please try again.');
     }
   };
 
@@ -87,7 +95,7 @@ export default function Create() {
       />
 
       <Pressable onPress={pickImage} className="mb-4 items-center rounded-xl bg-[#2e2e2e] p-3">
-        <Text className="text-white">Pick an Image</Text>
+        <Text className="text-white">Pick an Image (Optional)</Text>
       </Pressable>
 
       {imageUri && (
@@ -98,8 +106,7 @@ export default function Create() {
         />
       )}
 
-      <Pressable className="items-center rounded-xl bg-green-700 p-3"
-        onPress={handlePost}>
+      <Pressable onPress={handlePost} className="items-center rounded-xl bg-green-700 p-3">
         <Text className="font-semibold text-white">Post</Text>
       </Pressable>
 
