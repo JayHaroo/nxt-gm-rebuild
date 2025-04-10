@@ -43,9 +43,9 @@ export default function Create() {
     }
 
     const postData = {
+      author: userid,
       title: title,
-      content: description,
-      author: userid
+      desc: description
     };
 
     try {
