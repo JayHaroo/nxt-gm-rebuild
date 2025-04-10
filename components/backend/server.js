@@ -142,7 +142,7 @@ app.post('/api/upload', async (req, res) => {
     const post = {
       title,
       content,
-      author: new ObjectId(author)
+      author
     };
 
     await feedCollection.insertOne(post);
