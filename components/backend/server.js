@@ -128,6 +128,22 @@ app.get('/api/feed', async (req, res) => {
   }
 });
 
+app.post('/api/upload', async (req, res) => {
+  const { title, content, author } = req.body;
+
+  if (!title || !content || !author) {
+    return res.status(400).json({ message: 'Title, content, and author are required' });
+  }
+
+  try {
+    await feedCollection.insertOne({ title, content, author });
+    res.status(201).json({ message: 'Post uploaded successfully' });
+  } catch (error) {
+    console.error('❌ Upload error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
 // Start Server
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
