@@ -27,13 +27,16 @@ export default function Post() {
 
   return (
     <>
-      <View className="items-center justify-between bg-[#121212] px-4 py-2 pt-10 h-full">
+      <View className="items-center bg-[#121212] px-4 py-2 pt-10 h-full">
+        <Pressable onPress={() => navigation.goBack()} className="mr-2 items-center rounded bg-green-700">
+          <Text className="p-3 text-white">Go Back</Text>
+        </Pressable>
         <View className="items-center justify-between bg-[#121212] px-4 py-2 pt-10">
           {details.map((detail) => (
             <View
               key={detail._id}
               className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-              <Text className="text-white">{detail.title}</Text>
+              <Text className="text-white font-extrabold text-2xl">{detail.title}</Text>
               <Text className="text-white">{detail.desc}</Text>
             </View>
           ))}
