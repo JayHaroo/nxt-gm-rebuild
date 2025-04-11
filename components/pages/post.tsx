@@ -4,13 +4,40 @@ import { useState, useEffect } from 'react';
 
 export default function Post() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const postId = route.params?.postId ?? 'Post';
+
+  const [details, setDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(`http://192.168.56.1:3000/api/feed/${postId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setDetails([data]); // Wrap in array to match `.map()` usage
+        }
+      } catch (error) {
+        console.error('Error fetching feed:', error);
+      }
+    };
+
+    fetchPost();
+  }, []);
+
   return (
     <>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Post</Text>
-        <Pressable onPress={() => navigation.navigate('Create')}>
-          <Text>Create New Post</Text>
-        </Pressable>
+      <View className="items-center justify-between bg-[#121212] px-4 py-2 pt-10 h-full">
+        <View className="items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+          {details.map((detail) => (
+            <View
+              key={detail._id}
+              className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+              <Text className="text-white">{detail.title}</Text>
+              <Text className="text-white">{detail.desc}</Text>
+            </View>
+          ))}
+        </View>
       </View>
     </>
   );
