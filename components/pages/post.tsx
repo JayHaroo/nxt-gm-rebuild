@@ -25,18 +25,30 @@ export default function Post() {
     fetchPost();
   }, []);
 
+  const goBack = () => navigation.goBack();
+
   return (
     <>
-      <View className="items-center bg-[#121212] px-4 py-2 pt-10 h-full">
-        <Pressable onPress={() => navigation.goBack()} className="mr-2 items-center rounded bg-green-700">
-          <Text className="p-3 text-white">Go Back</Text>
-        </Pressable>
+      <View className="h-full items-center bg-[#121212] px-4 py-2 pt-10">
+        <View className="flex-row items-center justify-between bg-[#121212]">
+          <View className="flex-row items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+            <View className="flex-row items-center">
+              <Image
+                source={require('../../assets/logo.png')}
+                className="h-[8px] w-[100px] object-contain"
+              />
+            </View>
+            <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700">
+              <Text className="p-3 text-white">Go Back</Text>
+            </Pressable>
+          </View>
+        </View>
         <View className="items-center justify-between bg-[#121212] px-4 py-2 pt-10">
           {details.map((detail) => (
             <View
               key={detail._id}
               className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-              <Text className="text-white font-extrabold text-2xl">{detail.title}</Text>
+              <Text className="text-2xl font-extrabold text-white">{detail.title}</Text>
               <Text className="text-white">{detail.desc}</Text>
             </View>
           ))}
