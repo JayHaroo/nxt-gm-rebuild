@@ -130,6 +130,32 @@ app.get('/api/feed', async (req, res) => {
   }
 });
 
+app.get('/api/feed/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const post = await feedCollection.findOne({ _id: new ObjectId(id) });
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    let authorInfo = null;
+    try {
+      const authorObjectId = new ObjectId(post.author);
+      const author = await accountsCollection.findOne({ _id: authorObjectId });
+      authorInfo = author ? { username: author.username } : null;
+    } catch (err) {
+      // Invalid ObjectId — skip author enrichment
+      authorInfo = null;
+    }
+
+    res.json({ ...post, author: authorInfo });
+  } catch (error) {
+    console.error('❌ Post error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
 // Upload post
 app.post('/api/upload', async (req, res) => {
   const { author, title, desc } = req.body;
