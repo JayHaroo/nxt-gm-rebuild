@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { MongoClient, ObjectId } = require('mongodb');
-const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 3000;
@@ -158,7 +157,7 @@ app.get('/api/feed/:id', async (req, res) => {
 
 // Upload post
 app.post('/api/upload', async (req, res) => {
-  const { author, title, desc } = req.body;
+  const { author, title, desc, image_uri } = req.body;
 
   if (!author || !title || !desc) {
     return res.status(400).json({ message: 'Title, content, and author are required' });
@@ -168,7 +167,8 @@ app.post('/api/upload', async (req, res) => {
     const post = {
       author: new ObjectId(author), // Convert author to ObjectId
       title,
-      desc // Make sure to use 'content' instead of 'desc'
+      desc,
+      image_uri
     };
 
     await feedCollection.insertOne(post);
