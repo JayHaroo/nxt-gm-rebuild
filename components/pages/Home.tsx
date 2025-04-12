@@ -45,17 +45,17 @@ export default function Home() {
           />
           <Text className="mr-5 p-3 text-white">Welcome! {username ? username : 'Loading...'}</Text>
         </View>
-        <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700">
-          <Text className="p-3 text-white">Go Back</Text>
-        </Pressable>
         <Pressable
           onPress={() => navigation.navigate('Create', { userid: userid })}
           className="items-center rounded bg-green-700">
-          <Text className="p-3 text-white">+</Text>
+          <Text className="p-3 text-white"> + </Text>
+        </Pressable>
+        <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700">
+          <Text className="p-3 text-white">Log Out</Text>
         </Pressable>
       </View>
 
-      <ScrollView className='flex-1 bg-[#121212]' showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 bg-[#121212]" showsVerticalScrollIndicator={false}>
         <View className="flex-1 items-center justify-center bg-[#121212]">
           <View className="mt-5 w-full px-4">
             {posts.map((post, index) => (
