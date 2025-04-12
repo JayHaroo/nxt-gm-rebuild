@@ -45,7 +45,7 @@ export default function Create() {
     const postData = {
       author: userid,
       title: title,
-      desc: description
+      desc: description,
     };
 
     try {
@@ -74,7 +74,21 @@ export default function Create() {
 
   return (
     <View className="flex-1 bg-[#121212] px-4 py-6">
-      <Text className="mb-4 text-xl text-white">Create Post: {userid}</Text>
+      {/* <Text className="mb-4 text-xl text-white">Create Post: {userid}</Text> */}
+      <View className="mt-5 flex-row items-center justify-between bg-[#121212] mb-[30px]">
+        <View className="w-full flex-row justify-between bg-[#121212]">
+          <View className="flex-row items-center">
+            <Image
+              source={require('../../assets/logo.png')}
+              className="h-[8px] w-[100px] object-contain"
+            />
+          </View>
+          <Text className="text-xl font-bold text-white">Create Post</Text>
+          <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700">
+            <Text className="p-3 text-white">Go Back</Text>
+          </Pressable>
+        </View>
+      </View>
 
       <TextInput
         placeholder="Enter Title"
@@ -108,10 +122,6 @@ export default function Create() {
 
       <Pressable onPress={handlePost} className="items-center rounded-xl bg-green-700 p-3">
         <Text className="font-semibold text-white">Post</Text>
-      </Pressable>
-
-      <Pressable onPress={goBack} className="mt-6 items-center rounded bg-gray-700">
-        <Text className="p-3 text-white">Go Back</Text>
       </Pressable>
     </View>
   );
