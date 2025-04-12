@@ -47,7 +47,7 @@ export default function Home() {
         </View>
         <Pressable
           onPress={() => navigation.navigate('Create', { userid: userid })}
-          className="items-center rounded bg-green-700">
+          className="items-center rounded bg-green-700 mr-2">
           <Text className="p-3 text-white"> + </Text>
         </Pressable>
         <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700">
