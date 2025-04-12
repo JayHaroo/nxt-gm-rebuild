@@ -31,7 +31,7 @@ export default function Post() {
     <>
       <View className="h-full items-center bg-[#121212] px-4 py-2 pt-10">
         <View className="flex-row items-center justify-between bg-[#121212]">
-          <View className="flex-row items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+          <View className="flex-row justify-between bg-[#121212] w-full">
             <View className="flex-row items-center">
               <Image
                 source={require('../../assets/logo.png')}
@@ -48,8 +48,9 @@ export default function Post() {
             <View
               key={detail._id}
               className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-              <Text className="text-2xl font-extrabold text-white">{detail.title}</Text>
-              <Text className="text-white">{detail.desc}</Text>
+              <Text className="text-[30px] font-extrabold text-white">{detail.title}</Text>
+              <Text className="text-white font-bold"> Posted By: {detail.author?.username}</Text>
+              <Text className="text-white text-[20px] pt-5">{detail.desc}</Text>
             </View>
           ))}
         </View>
