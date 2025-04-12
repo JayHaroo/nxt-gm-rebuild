@@ -115,7 +115,7 @@ export default function Create() {
       {imageUri && (
         <Image
           source={{ uri: imageUri }}
-          className="mb-4 h-48 w-full rounded-xl"
+          className="mb-4 h-[300px] w-full rounded-xl"
           resizeMode="cover"
         />
       )}
