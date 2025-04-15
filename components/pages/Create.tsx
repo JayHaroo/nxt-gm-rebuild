@@ -1,9 +1,26 @@
 import { View, Text, Pressable, TextInput, Image, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
+import AWS from 'aws-sdk';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function Create() {
+  AWS.config.update({
+    accessKeyId: 'AKIAWIWZF6E3OPBBARKA',
+    secretAccessKey: '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',
+    region: 'ap-southeast-2',
+  });
+  const s3 = new AWS.S3();
+
+  const uploadFileToS3 = (bucketName, fileName, filePath) => {
+    const params = {
+      Bucket: bucketName,
+      Key: fileName,
+      Body: filePath,
+    };
+    return s3.upload(params).promise();
+  };
+
   const navigation = useNavigation();
   const route = useRoute();
   const userid = route.params?.userid ?? 'User';
@@ -23,16 +40,37 @@ export default function Create() {
   }, []);
 
   const pickImage = async () => {
+    const bucketName = 'nxtgm';
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
       allowsEditing: true,
     });
-
+  
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      const uri = result.assets[0].uri;
+      const fileName = uri.split('/').pop();
+      const response = await fetch(uri);
+      const blob = await response.blob();
+  
+      const params = {
+        Bucket: bucketName,
+        Key: `uploads/${Date.now()}_${fileName}`,
+        Body: blob,
+        ContentType: 'image/jpeg',
+      };
+  
+      try {
+        const uploadResult = await s3.upload(params).promise();
+        console.log('Uploaded to S3:', uploadResult.Location);
+        setImageUri(uploadResult.Location); // Set S3 image URL
+      } catch (err) {
+        console.error('S3 Upload Error:', err);
+        Alert.alert('Upload Error', 'Failed to upload image to S3.');
+      }
     }
   };
+  
 
   const SERVER_URL = 'http://192.168.56.1:3000/api/upload';
 
@@ -41,13 +79,14 @@ export default function Create() {
       Alert.alert('Missing Info', 'Please fill in all fields.');
       return;
     }
-
+  
     const postData = {
       author: userid,
       title: title,
       desc: description,
+      image_uri: imageUri, // Include image URL if uploaded
     };
-
+  
     try {
       const response = await fetch(SERVER_URL, {
         method: 'POST',
@@ -56,13 +95,13 @@ export default function Create() {
         },
         body: JSON.stringify(postData),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         Alert.alert('Post Failed', errorData.message || 'Something went wrong');
         return;
       }
-
+  
       const data = await response.json();
       console.log('Posted:', data.title);
       Alert.alert('Success', data.message || 'Uploaded successfully!');
@@ -71,11 +110,12 @@ export default function Create() {
       Alert.alert('Error', 'Failed to create post. Please try again.');
     }
   };
+  
 
   return (
     <View className="flex-1 bg-[#121212] px-4 py-6">
       {/* <Text className="mb-4 text-xl text-white">Create Post: {userid}</Text> */}
-      <View className="mt-5 flex-row items-center justify-between bg-[#121212] mb-[30px]">
+      <View className="mb-[30px] mt-5 flex-row items-center justify-between bg-[#121212]">
         <View className="w-full flex-row justify-between bg-[#121212]">
           <View className="flex-row items-center">
             <Image

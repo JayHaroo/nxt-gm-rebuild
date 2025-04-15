@@ -51,6 +51,9 @@ export default function Post() {
               <Text className="text-[30px] font-extrabold text-white">{detail.title}</Text>
               <Text className="text-white font-bold"> Posted By: {detail.author?.username}</Text>
               <Text className="text-white text-[20px] pt-5">{detail.desc}</Text>
+              {detail.image_uri && (
+                <Image src={detail.image_uri} className="h-[200px] w-[200px] object-contain" />
+              )}
             </View>
           ))}
         </View>
