@@ -49,7 +49,7 @@ export default function Post() {
               key={detail._id}
               className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
               <Text className="text-[30px] font-extrabold text-white">{detail.title}</Text>
-              <Text className="text-white font-bold"> Posted By: {detail.author?.username}</Text>
+              <Text className="text-white font-bold"> Posted By: {detail.author?.username} at {detail.createdAt}</Text>
               <Text className="text-white text-[20px] pt-5">{detail.desc}</Text>
               {detail.image_uri && (
                 <Image src={detail.image_uri} className="w-[350px] h-[500px] object-contain" />

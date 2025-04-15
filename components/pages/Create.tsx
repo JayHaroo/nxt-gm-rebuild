@@ -11,16 +11,6 @@ export default function Create() {
     region: 'ap-southeast-2',
   });
   const s3 = new AWS.S3();
-
-  const uploadFileToS3 = (bucketName, fileName, filePath) => {
-    const params = {
-      Bucket: bucketName,
-      Key: fileName,
-      Body: filePath,
-    };
-    return s3.upload(params).promise();
-  };
-
   const navigation = useNavigation();
   const route = useRoute();
   const userid = route.params?.userid ?? 'User';
@@ -84,7 +74,8 @@ export default function Create() {
       author: userid,
       title: title,
       desc: description,
-      image_uri: imageUri, // Include image URL if uploaded
+      image_uri: imageUri,
+      createdAt: new Date() // Include image URL if uploaded
     };
   
     try {
