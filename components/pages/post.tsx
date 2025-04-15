@@ -1,6 +1,7 @@
 import { View, Text, Pressable, TextInput, Image, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function Post() {
   const navigation = useNavigation();
@@ -8,6 +9,7 @@ export default function Post() {
   const postId = route.params?.postId ?? 'Post';
 
   const [details, setDetails] = useState([]);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -66,14 +68,23 @@ export default function Post() {
                 </Text>
                 <Text className="pt-5 text-[20px] text-white">{detail.desc}</Text>
                 {detail.image_uri && (
-                  <Image
-                    src={detail.image_uri}
-                    className="h-[500px] w-[350px] object-contain"
-                  />
+                  <Image src={detail.image_uri} className="h-[500px] w-[350px] object-contain" />
                 )}
               </View>
             );
           })}
+        </View>
+        <View className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+          { isLiked ? (
+            <Pressable onPress={() => setIsLiked(false)}>
+              <AntDesign name="like1" size={40} color="white" />
+            </Pressable>
+          ) : (
+            <Pressable onPress={() => setIsLiked(true)}>
+              <AntDesign name="like2" size={40} color="white" />
+            </Pressable>
+          )}
+          <Text className="text-[20px] font-bold text-white p-5">Comments:</Text>
         </View>
       </View>
     </>
