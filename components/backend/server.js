@@ -157,7 +157,7 @@ app.get('/api/feed/:id', async (req, res) => {
 
 // Upload post
 app.post('/api/upload', async (req, res) => {
-  const { author, title, desc, image_uri } = req.body;
+  const { author, title, desc, image_uri, createdAt } = req.body;
 
   if (!author || !title || !desc) {
     return res.status(400).json({ message: 'Title, content, and author are required' });
@@ -168,7 +168,8 @@ app.post('/api/upload', async (req, res) => {
       author: new ObjectId(author), // Convert author to ObjectId
       title,
       desc,
-      image_uri
+      image_uri,
+      createdAt: new Date(),
     };
 
     await feedCollection.insertOne(post);
