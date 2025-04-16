@@ -107,7 +107,7 @@ export default function Create() {
     <View className="flex-1 bg-[#121212] px-4 py-6">
       {/* <Text className="mb-4 text-xl text-white">Create Post: {userid}</Text> */}
       <View className="mb-[30px] mt-5 flex-row items-center justify-between bg-[#121212]">
-        <View className="w-full flex-row justify-between bg-[#121212]">
+        <View className="w-full flex-row justify-between bg-[#121212] items-center">
           <View className="flex-row items-center">
             <Image
               source={require('../../assets/logo.png')}
