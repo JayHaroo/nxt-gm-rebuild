@@ -52,6 +52,8 @@ export default function Profile() {
           <Text className="text-sm font-bold text-white">User ID: {userid}</Text>
         </View>
 
+        <Text className="mt-5 text-xl font-bold text-white">Posts:</Text>
+
         <View className="mt-5 w-max bg-[#121212] px-4">
           {posts.length > 0 ? (
             <ScrollView
