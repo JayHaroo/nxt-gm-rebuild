@@ -30,7 +30,6 @@ export default function Create() {
   }, []);
 
   const pickImage = async () => {
-    const bucketName = 'nxtgm';
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
@@ -39,8 +38,24 @@ export default function Create() {
   
     if (!result.canceled) {
       const uri = result.assets[0].uri;
-      const fileName = uri.split('/').pop();
-      const response = await fetch(uri);
+      setImageUri(uri); // only set local URI, do not upload yet
+    }
+  };
+    
+  const SERVER_URL = 'http://192.168.56.1:3000/api/upload';
+
+  const handlePost = async () => {
+    if (!title || !description) {
+      Alert.alert('Missing Info', 'Please fill in all fields.');
+      return;
+    }
+  
+    let uploadedImageUrl = null;
+  
+    if (imageUri) {
+      const bucketName = 'nxtgm';
+      const fileName = imageUri.split('/').pop();
+      const response = await fetch(imageUri);
       const blob = await response.blob();
   
       const params = {
@@ -53,37 +68,26 @@ export default function Create() {
       try {
         const uploadResult = await s3.upload(params).promise();
         console.log('Uploaded to S3:', uploadResult.Location);
-        setImageUri(uploadResult.Location); // Set S3 image URL
+        uploadedImageUrl = uploadResult.Location;
       } catch (err) {
         console.error('S3 Upload Error:', err);
         Alert.alert('Upload Error', 'Failed to upload image to S3.');
+        return;
       }
-    }
-  };
-  
-
-  const SERVER_URL = 'http://192.168.56.1:3000/api/upload';
-
-  const handlePost = async () => {
-    if (!title || !description) {
-      Alert.alert('Missing Info', 'Please fill in all fields.');
-      return;
     }
   
     const postData = {
       author: userid,
-      title: title,
+      title,
       desc: description,
-      image_uri: imageUri,
-      createdAt: new Date() // Include image URL if uploaded
+      image_uri: uploadedImageUrl, // will be null if no image
+      createdAt: new Date(),
     };
   
     try {
       const response = await fetch(SERVER_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postData),
       });
   
@@ -96,12 +100,16 @@ export default function Create() {
       const data = await response.json();
       console.log('Posted:', data.title);
       Alert.alert('Success', data.message || 'Uploaded successfully!');
+      // optionally clear the form
+      setTitle('');
+      setDescription('');
+      setImageUri(null);
     } catch (error) {
       console.error('Error creating post:', error);
       Alert.alert('Error', 'Failed to create post. Please try again.');
     }
   };
-  
+    
 
   return (
     <View className="flex-1 bg-[#121212] px-4 py-6">
