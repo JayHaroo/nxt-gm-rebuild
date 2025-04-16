@@ -33,7 +33,7 @@ export default function Post() {
   return (
     <>
       <View className="h-full items-center bg-[#121212] px-4 py-2 pt-10">
-        <View className="flex-row items-center justify-between bg-[#121212]">
+        <View className="flex-row items-center justify-between bg-[#121212] mb-5">
           <View className="w-full flex-row justify-between bg-[#121212]">
             <View className="flex-row items-center">
               <Image
