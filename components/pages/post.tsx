@@ -49,7 +49,7 @@ export default function Post() {
           </View>
         </View>
 
-        <ScrollView className='w-full'>
+        <ScrollView className="w-full">
           <View className="items-center justify-between bg-[#121212]">
             {details.map((detail) => {
               const formattedDate = new Date(detail.createdAt).toLocaleString('en-US', {
@@ -66,13 +66,19 @@ export default function Post() {
                 <View
                   key={detail._id}
                   className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-                  <Text className="text-[30px] font-extrabold text-white text-center">{detail.title}</Text>
+                  <Text className="text-center text-[30px] font-extrabold text-white">
+                    {detail.title}
+                  </Text>
                   <Text className="font-bold text-gray-400">
                     Posted By: {detail.author?.username} at {formattedDate}
                   </Text>
-                  <Text className="pt-5 text-[20px] text-white text-center p-7">{detail.desc}</Text>
+                  <Text className="p-7 pt-5 text-center text-[20px] text-white">{detail.desc}</Text>
                   {detail.image_uri && (
-                    <Image src={detail.image_uri} className="h-[500px] w-[350px] object-contain" />
+                    <Image
+                      source={{ uri: detail.image_uri }}
+                      resizeMode="contain"
+                      className="mt-4 h-[400px] w-[400px] rounded-xl"
+                    />
                   )}
                 </View>
               );
