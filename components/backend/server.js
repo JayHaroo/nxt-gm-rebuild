@@ -129,6 +129,36 @@ app.get('/api/feed', async (req, res) => {
   }
 });
 
+app.get('/api/post/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const objectId = new ObjectId(id); // This is the author's ID
+    const posts = await feedCollection.find({ author: objectId }).toArray();
+
+    const enrichedPosts = await Promise.all(
+      posts.map(async (post) => {
+        let authorInfo = null;
+
+        try {
+          const author = await accountsCollection.findOne({ _id: objectId });
+          authorInfo = author ? { username: author.username } : null;
+        } catch (err) {
+          authorInfo = null;
+        }
+
+        return { ...post, author: authorInfo };
+      })
+    );
+
+    res.json(enrichedPosts);
+  } catch (error) {
+    console.error('❌ Posts error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+
 app.get('/api/feed/:id', async (req, res) => {
   const { id } = req.params;
 

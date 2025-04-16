@@ -51,7 +51,7 @@ export default function Home() {
             source={require('../../assets/logo.png')}
             className="h-[8px] w-[100px] object-contain"
           />
-          <Pressable onPress={() => navigation.navigate('Profile', { userid: userid })}>
+          <Pressable onPress={() => navigation.navigate('Profile', { userid: userid , username: username })}>
             <Text className="mr-5 p-3 text-white">
               Welcome! {username ? username : 'Loading...'}
             </Text>
