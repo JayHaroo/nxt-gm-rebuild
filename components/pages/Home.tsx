@@ -1,6 +1,8 @@
 import { View, Text, Pressable, Image, ScrollView, RefreshControl } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect, useCallback } from 'react';
+import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Home() {
   const route = useRoute();
@@ -53,11 +55,11 @@ export default function Home() {
         </View>
         <Pressable
           onPress={() => navigation.navigate('Create', { userid: userid })}
-          className="items-center rounded bg-green-700 mr-2">
-          <Text className="p-3 text-white"> + </Text>
+          className="mr-2 items-center rounded bg-green-700 w-[50px] h-[50px] align-middle items-center justify-center">
+          <Ionicons name="create-outline" size={24} color="white" />
         </Pressable>
-        <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700">
-          <Text className="p-3 text-white">Log Out</Text>
+        <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700 w-[50px] h-[50px] align-middle items-center justify-center">
+          <Entypo name="back" size={24} color="white"/>
         </Pressable>
       </View>
 
