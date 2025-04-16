@@ -7,6 +7,7 @@ import Home from 'components/pages/Home';
 import Landing from 'components/Landing';
 import Create from 'components/pages/Create';
 import Post from 'components/pages/Post';
+import Profile from 'components/pages/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ function RootStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Create" component={Create} />
       <Stack.Screen name="Post" component={Post} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 }

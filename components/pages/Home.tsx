@@ -51,15 +51,21 @@ export default function Home() {
             source={require('../../assets/logo.png')}
             className="h-[8px] w-[100px] object-contain"
           />
-          <Text className="mr-5 p-3 text-white">Welcome! {username ? username : 'Loading...'}</Text>
+          <Pressable onPress={() => navigation.navigate('Profile', { userid: userid })}>
+            <Text className="mr-5 p-3 text-white">
+              Welcome! {username ? username : 'Loading...'}
+            </Text>
+          </Pressable>
         </View>
         <Pressable
           onPress={() => navigation.navigate('Create', { userid: userid })}
-          className="mr-2 items-center rounded bg-green-700 w-[50px] h-[50px] align-middle items-center justify-center">
+          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
           <Ionicons name="create-outline" size={24} color="white" />
         </Pressable>
-        <Pressable onPress={goBack} className="mr-2 items-center rounded bg-green-700 w-[50px] h-[50px] align-middle items-center justify-center">
-          <Entypo name="back" size={24} color="white"/>
+        <Pressable
+          onPress={goBack}
+          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
+          <Entypo name="back" size={24} color="white" />
         </Pressable>
       </View>
 
