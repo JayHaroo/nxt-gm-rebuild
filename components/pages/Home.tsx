@@ -51,7 +51,8 @@ export default function Home() {
             source={require('../../assets/logo.png')}
             className="h-[8px] w-[100px] object-contain"
           />
-          <Pressable onPress={() => navigation.navigate('Profile', { userid: userid , username: username })}>
+          <Pressable
+            onPress={() => navigation.navigate('Profile', { userid: userid, username: username })}>
             <Text className="mr-5 p-3 text-white">
               Welcome! {username ? username : 'Loading...'}
             </Text>
@@ -67,6 +68,11 @@ export default function Home() {
           className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
           <Entypo name="back" size={24} color="white" />
         </Pressable>
+      </View>
+      <View className="w-full bg-[#121212]">
+        <Text className="mb-2 mt-2 text-center text-[20px] font-extrabold text-white">
+          Feed:
+        </Text>
       </View>
 
       <ScrollView

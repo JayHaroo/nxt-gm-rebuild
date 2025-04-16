@@ -48,7 +48,6 @@ export default function Post() {
             </Pressable>
           </View>
         </View>
-
         <ScrollView className="w-full">
           <View className="items-center justify-between bg-[#121212]">
             {details.map((detail) => {
