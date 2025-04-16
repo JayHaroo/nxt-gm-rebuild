@@ -32,13 +32,14 @@ export default function Profile() {
   return (
     <View className="h-full items-center bg-[#121212] px-4 py-2 pt-10">
       <View className="items-center justify-between bg-[#121212]">
-        <View className="w-full flex-row justify-between bg-[#121212]">
+        <View className="w-full flex-row justify-between bg-[#121212] items-center">
           <View className="flex-row items-center">
             <Image
               source={require('../../assets/logo.png')}
               className="h-[8px] w-[100px] object-contain"
             />
           </View>
+          <Text className="text-xl font-bold text-white">Profile</Text>
           <Pressable
             onPress={goBack}
             className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
@@ -47,9 +48,8 @@ export default function Profile() {
         </View>
 
         <View className="mt-5 items-center justify-between bg-[#121212]">
-          <Text className="text-xl font-bold text-white">Profile</Text>
-          <Text className="text-sm font-bold text-white">User ID: {userid}</Text>
           <Text className="text-3xl font-bold text-white">{username}</Text>
+          <Text className="text-sm font-bold text-white">User ID: {userid}</Text>
         </View>
 
         <View className="mt-5 w-max bg-[#121212] px-4">
