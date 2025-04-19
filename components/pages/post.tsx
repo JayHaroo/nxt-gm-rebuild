@@ -30,6 +30,8 @@ export default function Post() {
           } else {
             setOwner(false);
           }
+
+          console.log('Post details:', postId);
         }
       } catch (error) {
         console.error('Error fetching feed:', error);
@@ -41,15 +43,21 @@ export default function Post() {
 
   const deletePost = async () => {
     try {
-      const response = await fetch(`http://192.168.56.1:3000/api/delete/${postId}`);
+      const response = await fetch(`http://192.168.56.1:3000/api/delete/${postId}`, {
+        method: 'DELETE',
+      });
+  
       if (response.ok) {
         const data = await response.json();
         setDetails([data]); // Wrap in array to match `.map()` usage
+      } else {
+        console.error('Failed to delete post:', response.statusText);
       }
     } catch (error) {
-      console.error('Error fetching feed:', error);
+      console.error('Error deleting post:', error);
     }
   };
+  
 
   const goBack = () => navigation.goBack();
 
