@@ -73,9 +73,40 @@ export default function Post() {
                         {detail.title}
                       </Text>
                     </View>
-                    <Pressable>
+                    <Pressable onPress={() => setModalVisible(true)}>
                       <Entypo name="dots-three-horizontal" size={24} color="white" />
                     </Pressable>
+                    <Modal
+                      animationType="slide"
+                      transparent={true}
+                      visible={modalVisible}
+                      onRequestClose={() => setModalVisible(false)}>
+                      <View className="flex-1 items-center justify-center bg-black bg-opacity-25">
+                        <View className="w-[300px] rounded-lg bg-[#121212] p-4">
+                          <Text className="text-white">Edit Post</Text>
+                          <Pressable
+                            onPress={() => {
+                              setModalVisible(false);
+                              Alert.alert('Post edited!');
+                            }}>
+                            <Text className="text-green-700">Edit</Text>
+                          </Pressable>
+                          <Pressable
+                            onPress={() => {
+                              setModalVisible(false);
+                              Alert.alert('Post deleted!');
+                            }}>
+                            <Text className="text-red-700">Delete</Text>
+                          </Pressable>
+                          <Pressable
+                            onPress={() => {
+                              setModalVisible(false);
+                            }}>
+                            <Text className="text-yellow-700">Close</Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    </Modal>
                   </View>
                   <Text className="font-bold text-gray-400">
                     Posted By: {detail.author?.username} at {formattedDate}
