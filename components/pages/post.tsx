@@ -9,10 +9,12 @@ export default function Post() {
   const navigation = useNavigation();
   const route = useRoute();
   const postId = route.params?.postId ?? 'Post';
+  const username = route.params?.username ?? 'User';
 
   const [details, setDetails] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [owner, setOwner] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -20,7 +22,14 @@ export default function Post() {
         const response = await fetch(`http://192.168.56.1:3000/api/feed/${postId}`);
         if (response.ok) {
           const data = await response.json();
-          setDetails([data]); // Wrap in array to match `.map()` usage
+          setDetails([data]);
+
+          // Check if current user is the owner
+          if (data.author?.username === username) {
+            setOwner(true);
+          } else {
+            setOwner(false);
+          }
         }
       } catch (error) {
         console.error('Error fetching feed:', error);
@@ -29,6 +38,18 @@ export default function Post() {
 
     fetchPost();
   }, []);
+
+  const deletePost = async () => {
+    try {
+      const response = await fetch(`http://192.168.56.1:3000/api/delete/${postId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setDetails([data]); // Wrap in array to match `.map()` usage
+      }
+    } catch (error) {
+      console.error('Error fetching feed:', error);
+    }
+  };
 
   const goBack = () => navigation.goBack();
 
@@ -67,8 +88,8 @@ export default function Post() {
                 <View
                   key={detail._id}
                   className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-2">
-                  <View className="w-full flex-row items-center justify-between mb-2">
-                    <View className='w-full'>
+                  <View className="mb-2 w-full flex-row items-center justify-between">
+                    <View className="w-full">
                       <Text className="text-center text-[30px] font-extrabold text-white">
                         {detail.title}
                       </Text>
@@ -91,13 +112,17 @@ export default function Post() {
                             }}>
                             <Text className="text-green-700">Edit</Text>
                           </Pressable>
-                          <Pressable
-                            onPress={() => {
-                              setModalVisible(false);
-                              Alert.alert('Post deleted!');
-                            }}>
-                            <Text className="text-red-700">Delete</Text>
-                          </Pressable>
+                          {owner && (
+                            <Pressable
+                              onPress={async () => {
+                                setModalVisible(false);
+                                await deletePost();
+                                Alert.alert('Post deleted!');
+                                navigation.goBack(); // Optional: go back after deletion
+                              }}>
+                              <Text className="text-red-700">Delete</Text>
+                            </Pressable>
+                          )}
                           <Pressable
                             onPress={() => {
                               setModalVisible(false);
