@@ -9,12 +9,14 @@ export default function Post() {
   const navigation = useNavigation();
   const route = useRoute();
   const postId = route.params?.postId ?? 'Post';
-  const username = route.params?.username ?? 'User';
+  const username = route.params?.username;
+  const userId = route.params?.userId; // make sure you're passing this when navigating
 
   const [details, setDetails] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [owner, setOwner] = useState(false);
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -31,6 +33,10 @@ export default function Post() {
             setOwner(false);
           }
 
+          // Check if the post is liked by the current user
+          const hasLiked = data.likes?.some((id) => id === username); // Assuming username is used as the user ID
+          setIsLiked(hasLiked);
+
           console.log('Post details:', postId);
         }
       } catch (error) {
@@ -46,7 +52,7 @@ export default function Post() {
       const response = await fetch(`http://192.168.56.1:3000/api/delete/${postId}`, {
         method: 'DELETE',
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         setDetails([data]); // Wrap in array to match `.map()` usage
@@ -57,7 +63,55 @@ export default function Post() {
       console.error('Error deleting post:', error);
     }
   };
-  
+
+  // Like/Unlike function
+  const toggleLike = async () => {
+    try {
+      const response = await fetch(`http://192.168.56.1:3000/api/like/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }) // Assuming username is used as user ID
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsLiked(!isLiked); // Toggle like state
+        Alert.alert(data.message); // Show like/unlike status
+      } else {
+        console.error('Failed to like/unlike post');
+      }
+    } catch (error) {
+      console.error('Error liking/unliking post:', error);
+    }
+  };
+
+  // Comment submission function
+  const submitComment = async () => {
+    if (!comment) {
+      return Alert.alert('Please enter a comment');
+    }
+
+    try {
+      const response = await fetch(`http://192.168.56.1:3000/api/comment/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: userId, // Assuming username is used as user ID
+          comment: comment,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setComment(''); // Clear the comment input
+        Alert.alert('Comment added!');
+      } else {
+        console.error('Failed to add comment');
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
 
   const goBack = () => navigation.goBack();
 
@@ -74,7 +128,7 @@ export default function Post() {
             </View>
             <Pressable
               onPress={goBack}
-              className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
+              className="mr-2 h-[50px] w-[50px] items-center justify-center rounded bg-green-700">
               <Entypo name="back" size={24} color="white" />
             </Pressable>
           </View>
@@ -157,25 +211,33 @@ export default function Post() {
             })}
           </View>
           <View className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-            {isLiked ? (
-              <Pressable onPress={() => setIsLiked(false)}>
+            <Pressable onPress={toggleLike}>
+              {isLiked ? (
                 <AntDesign name="like1" size={40} color="white" />
-              </Pressable>
-            ) : (
-              <Pressable onPress={() => setIsLiked(true)}>
+              ) : (
                 <AntDesign name="like2" size={40} color="white" />
-              </Pressable>
-            )}
+              )}
+            </Pressable>
             <Text className="p-5 text-[20px] font-bold text-white">Comments:</Text>
+            {details.map((detail) => {
+              return detail.comments?.map((comment, index) => (
+                <View key={index} className="mb-2 w-full flex-row items-center justify-between">
+                  <Text className="text-gray-400">{comment.comment}</Text>
+                  <Text className="text-gray-400">By: {comment.userId}</Text>
+                </View>
+              ));
+            })}
           </View>
           <View className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
             <TextInput
               className="h-[150px] w-full rounded-lg bg-gray-700 p-2 text-white"
               placeholder="Write a comment..."
               placeholderTextColor="#888"
+              value={comment}
+              onChangeText={setComment}
             />
             <Pressable
-              onPress={() => Alert.alert('Comment submitted!')}
+              onPress={submitComment}
               className="mt-2 h-[50px] w-full items-center justify-center rounded-lg bg-green-700">
               <Ionicons name="send" size={24} color="white" />
             </Pressable>
