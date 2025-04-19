@@ -80,9 +80,12 @@ export default function Create() {
       author: userid,
       title,
       desc: description,
-      image_uri: uploadedImageUrl, // will be null if no image
+      image_uri: uploadedImageUrl, // null if no image
       createdAt: new Date(),
+      likes: 0, // initialize likes
+      comments: [], // initialize empty comments array
     };
+    
   
     try {
       const response = await fetch(SERVER_URL, {

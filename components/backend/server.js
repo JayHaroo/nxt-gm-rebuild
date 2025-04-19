@@ -158,7 +158,6 @@ app.get('/api/post/:id', async (req, res) => {
   }
 });
 
-
 app.get('/api/feed/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -199,7 +198,9 @@ app.post('/api/upload', async (req, res) => {
       title,
       desc,
       image_uri,
-      createdAt: new Date(),
+      createdAt: createdAt ? new Date(createdAt) : new Date(),
+      likes: [], // 🆕 Initialize as empty array
+      comments: [], // 🆕 Initialize as empty array
     };
 
     await feedCollection.insertOne(post);
@@ -236,11 +237,13 @@ app.post('/api/like/:id', async (req, res) => {
     const post = await feedCollection.findOne({ _id: new ObjectId(postId) });
     if (!post) return res.status(404).json({ message: 'Post not found' });
 
-    const hasLiked = post.likes?.some(id => id.toString() === userId);
+    const userObjectId = new ObjectId(userId);
+
+    const hasLiked = post.likes?.some((id) => id.toString() === userObjectId.toString());
 
     const update = hasLiked
-      ? { $pull: { likes: new ObjectId(userId) } } // unlike
-      : { $addToSet: { likes: new ObjectId(userId) } }; // like
+      ? { $pull: { likes: userObjectId } }
+      : { $addToSet: { likes: userObjectId } };
 
     await feedCollection.updateOne({ _id: new ObjectId(postId) }, update);
 
@@ -256,7 +259,6 @@ app.post('/api/comment/:id', async (req, res) => {
   const { userId, comment } = req.body;
 
   if (!userId || !comment) return res.status(400).json({ message: 'User ID and comment required' });
-
   try {
     const user = await accountsCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -265,7 +267,7 @@ app.post('/api/comment/:id', async (req, res) => {
       userId: new ObjectId(userId),
       username: user.username,
       comment,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     await feedCollection.updateOne(
