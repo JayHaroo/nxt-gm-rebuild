@@ -66,7 +66,7 @@ export default function Post() {
               return (
                 <View
                   key={detail._id}
-                  className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+                  className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-2">
                   <View className="w-full flex-row items-center justify-between mb-2">
                     <View className='w-full'>
                       <Text className="text-center text-[30px] font-extrabold text-white">
