@@ -210,6 +210,21 @@ app.post('/api/upload', async (req, res) => {
   }
 });
 
+app.delete('/api/delete/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await feedCollection.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    res.json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('❌ Delete error:', error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
 
 // Start server
 app.listen(port, () => {
