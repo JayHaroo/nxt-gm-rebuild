@@ -30,6 +30,8 @@ export default function Post() {
           } else {
             setOwner(false);
           }
+
+          console.log('User details:', username);
         }
       } catch (error) {
         console.error('Error fetching feed:', error);
