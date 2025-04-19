@@ -50,7 +50,7 @@ export default function Post() {
             </Pressable>
           </View>
         </View>
-        <ScrollView className="w-full">
+        <ScrollView className="w-full" persistentScrollbar={false}>
           <View className="items-center justify-between bg-[#121212]">
             {details.map((detail) => {
               const formattedDate = new Date(detail.createdAt).toLocaleString('en-US', {
