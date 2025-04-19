@@ -3,6 +3,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Post() {
   const navigation = useNavigation();
@@ -94,6 +95,18 @@ export default function Post() {
               </Pressable>
             )}
             <Text className="p-5 text-[20px] font-bold text-white">Comments:</Text>
+          </View>
+          <View className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
+            <TextInput
+              className="h-[150px] w-full rounded-lg bg-gray-700 p-2 text-white"
+              placeholder="Write a comment..."
+              placeholderTextColor="#888"
+            />
+            <Pressable
+              onPress={() => Alert.alert('Comment submitted!')}
+              className="mt-2 h-[50px] w-full items-center justify-center rounded-lg bg-green-700">
+              <Ionicons name="send" size={24} color="white" />
+            </Pressable>
           </View>
         </ScrollView>
       </View>
