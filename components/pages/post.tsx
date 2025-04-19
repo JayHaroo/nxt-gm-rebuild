@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, Image, Alert, ScrollView } from 'react-native';
+import { View, Text, Pressable, TextInput, Image, Alert, ScrollView, Modal } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -34,7 +34,7 @@ export default function Post() {
   return (
     <>
       <View className="h-full items-center bg-[#121212] px-4 py-2 pt-10">
-        <View className="flex-row items-center justify-between bg-[#121212] mb-5">
+        <View className="mb-5 flex-row items-center justify-between bg-[#121212]">
           <View className="w-full flex-row justify-between bg-[#121212]">
             <View className="flex-row items-center">
               <Image
@@ -66,9 +66,16 @@ export default function Post() {
                 <View
                   key={detail._id}
                   className="flex-col items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-                  <Text className="text-center text-[30px] font-extrabold text-white">
-                    {detail.title}
-                  </Text>
+                  <View className="w-full flex-row items-center justify-between mb-2">
+                    <View className='w-full'>
+                      <Text className="text-center text-[30px] font-extrabold text-white">
+                        {detail.title}
+                      </Text>
+                    </View>
+                    <Pressable>
+                      <Entypo name="dots-three-horizontal" size={24} color="white" />
+                    </Pressable>
+                  </View>
                   <Text className="font-bold text-gray-400">
                     Posted By: {detail.author?.username} at {formattedDate}
                   </Text>
