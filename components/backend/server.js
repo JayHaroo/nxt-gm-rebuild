@@ -226,6 +226,60 @@ app.delete('/api/delete/:id', async (req, res) => {
   }
 });
 
+app.post('/api/like/:id', async (req, res) => {
+  const postId = req.params.id;
+  const { userId } = req.body;
+
+  if (!userId) return res.status(400).json({ message: 'User ID required' });
+
+  try {
+    const post = await feedCollection.findOne({ _id: new ObjectId(postId) });
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    const hasLiked = post.likes?.some(id => id.toString() === userId);
+
+    const update = hasLiked
+      ? { $pull: { likes: new ObjectId(userId) } } // unlike
+      : { $addToSet: { likes: new ObjectId(userId) } }; // like
+
+    await feedCollection.updateOne({ _id: new ObjectId(postId) }, update);
+
+    res.json({ message: hasLiked ? 'Unliked' : 'Liked' });
+  } catch (err) {
+    console.error('❌ Like error:', err);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+app.post('/api/comment/:id', async (req, res) => {
+  const postId = req.params.id;
+  const { userId, comment } = req.body;
+
+  if (!userId || !comment) return res.status(400).json({ message: 'User ID and comment required' });
+
+  try {
+    const user = await accountsCollection.findOne({ _id: new ObjectId(userId) });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const commentObj = {
+      userId: new ObjectId(userId),
+      username: user.username,
+      comment,
+      createdAt: new Date()
+    };
+
+    await feedCollection.updateOne(
+      { _id: new ObjectId(postId) },
+      { $push: { comments: commentObj } }
+    );
+
+    res.status(201).json({ message: 'Comment added', comment: commentObj });
+  } catch (err) {
+    console.error('❌ Comment error:', err);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
