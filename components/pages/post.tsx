@@ -17,6 +17,10 @@ export default function Post() {
   const [modalVisible, setModalVisible] = useState(false);
   const [owner, setOwner] = useState(false);
   const [comment, setComment] = useState('');
+  const checkIfLiked = (likesArray, username) => {
+    return likesArray?.some((id) => id === username);
+  };
+  
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -27,15 +31,11 @@ export default function Post() {
           setDetails([data]);
 
           // Check if current user is the owner
-          if (data.author?.username === username) {
-            setOwner(true);
-          } else {
-            setOwner(false);
-          }
+          setOwner(data.author?.username === username);
 
-          // Check if the post is liked by the current user
-          const hasLiked = data.likes?.some((id) => id === username); // Assuming username is used as the user ID
-          setIsLiked(hasLiked);
+          // Use the function to check if the user has liked the post
+          const liked = checkIfLiked(data.likes, username);
+          setIsLiked(liked);
 
           console.log('Post details:', postId);
         }
@@ -70,7 +70,7 @@ export default function Post() {
       const response = await fetch(`http://192.168.56.1:3000/api/like/${postId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }) // Assuming username is used as user ID
+        body: JSON.stringify({ userId }), // Assuming username is used as user ID
       });
 
       if (response.ok) {
@@ -223,7 +223,7 @@ export default function Post() {
               return detail.comments?.map((comment, index) => (
                 <View key={index} className="mb-2 w-full flex-row items-center justify-between">
                   <Text className="text-gray-400">{comment.comment}</Text>
-                  <Text className="text-gray-400">By: {comment.userId}</Text>
+                  <Text className="text-gray-400">By: {comment.username}</Text>
                 </View>
               ));
             })}
