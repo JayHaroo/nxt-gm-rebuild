@@ -96,9 +96,11 @@ export default function Post() {
                         {detail.title}
                       </Text>
                     </View>
-                    <Pressable onPress={() => setModalVisible(true)}>
-                      <Entypo name="dots-three-horizontal" size={24} color="white" />
-                    </Pressable>
+                    {owner && (
+                      <Pressable onPress={() => setModalVisible(true)}>
+                        <Entypo name="dots-three-horizontal" size={24} color="white" />
+                      </Pressable>
+                    )}
                     <Modal
                       animationType="slide"
                       transparent={true}
@@ -114,17 +116,15 @@ export default function Post() {
                             }}>
                             <Text className="text-green-700">Edit</Text>
                           </Pressable>
-                          {owner && (
-                            <Pressable
-                              onPress={async () => {
-                                setModalVisible(false);
-                                await deletePost();
-                                Alert.alert('Post deleted!');
-                                navigation.goBack(); // Optional: go back after deletion
-                              }}>
-                              <Text className="text-red-700">Delete</Text>
-                            </Pressable>
-                          )}
+                          <Pressable
+                            onPress={async () => {
+                              setModalVisible(false);
+                              await deletePost();
+                              Alert.alert('Post deleted!');
+                              navigation.goBack(); // Optional: go back after deletion
+                            }}>
+                            <Text className="text-red-700">Delete</Text>
+                          </Pressable>
                           <Pressable
                             onPress={() => {
                               setModalVisible(false);
