@@ -12,6 +12,7 @@ export default function Post() {
 
   const [details, setDetails] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
