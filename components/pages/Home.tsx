@@ -37,7 +37,7 @@ export default function Home() {
   const handlePostPress = (post) => {
     try {
       const postId = post._id;
-      navigation.navigate('Post', { postId }, { username: username });
+      navigation.navigate('Post', { postId, username: username });
     } catch (error) {
       console.error('Error fetching post:', error);
     }
