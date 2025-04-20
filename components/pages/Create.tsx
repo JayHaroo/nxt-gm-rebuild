@@ -1,8 +1,9 @@
-import { View, Text, Pressable, TextInput, Image, Alert } from 'react-native';
+import { View, Text, Pressable, TextInput, Image, Alert, Flatlist } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import * as ImagePicker from 'expo-image-picker';
+import SearchableDropdown from 'components/elements/Dropdown';
 
 export default function Create() {
   AWS.config.update({
@@ -19,6 +20,7 @@ export default function Create() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [imageUri, setImageUri] = useState(null);
+  const [location, setLocation] = useState(null); // null if no image
 
   useEffect(() => {
     (async () => {
@@ -80,7 +82,8 @@ export default function Create() {
       author: userid,
       title,
       desc: description,
-      image_uri: uploadedImageUrl, // null if no image
+      image_uri: uploadedImageUrl,
+      location, // null if no image
       createdAt: new Date(),
       likes: 0, // initialize likes
       comments: [], // initialize empty comments array
@@ -161,6 +164,8 @@ export default function Create() {
           resizeMode="cover"
         />
       )}
+
+      <SearchableDropdown onSelect={(location) => setLocation(location)} />
 
       <Pressable onPress={handlePost} className="items-center rounded-xl bg-green-700 p-3">
         <Text className="font-semibold text-white">Post</Text>

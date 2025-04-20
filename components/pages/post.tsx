@@ -198,6 +198,7 @@ export default function Post() {
                   <Text className="font-bold text-gray-400">
                     Posted By: {detail.author?.username} at {formattedDate}
                   </Text>
+                  <Text className="text-center text-[15px] text-white">Event Location: {detail.location}</Text>
                   <Text className="p-7 pt-5 text-center text-[20px] text-white">{detail.desc}</Text>
                   {detail.image_uri && (
                     <Image
