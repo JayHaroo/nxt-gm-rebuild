@@ -91,6 +91,12 @@ export default function Home() {
                 <Text className="text-[20px] font-bold text-white">{post.title}</Text>
                 <Text className="text-gray-400">{post.desc}</Text>
                 <Text className="text-gray-400">Posted By {post.author?.username}</Text>
+                {post.image_uri && (
+                  <Image
+                    source={{ uri: post.image_uri }}
+                    className="mt-2 h-[200px] w-full rounded-lg object-cover"
+                  />
+                )}
               </Pressable>
             ))}
           </View>
