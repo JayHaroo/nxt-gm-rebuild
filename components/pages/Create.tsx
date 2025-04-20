@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, Image, Alert, Flatlist } from 'react-native';
+import { View, Text, Pressable, TextInput, Image, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
@@ -21,6 +21,7 @@ export default function Create() {
   const [description, setDescription] = useState('');
   const [imageUri, setImageUri] = useState(null);
   const [location, setLocation] = useState(null); // null if no image
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -37,13 +38,13 @@ export default function Create() {
       quality: 1,
       allowsEditing: true,
     });
-  
+
     if (!result.canceled) {
       const uri = result.assets[0].uri;
       setImageUri(uri); // only set local URI, do not upload yet
     }
   };
-    
+
   const SERVER_URL = 'http://192.168.56.1:3000/api/upload';
 
   const handlePost = async () => {
@@ -51,77 +52,70 @@ export default function Create() {
       Alert.alert('Missing Info', 'Please fill in all fields.');
       return;
     }
-  
+
+    setLoading(true); // show loader
     let uploadedImageUrl = null;
-  
-    if (imageUri) {
-      const bucketName = 'nxtgm';
-      const fileName = imageUri.split('/').pop();
-      const response = await fetch(imageUri);
-      const blob = await response.blob();
-  
-      const params = {
-        Bucket: bucketName,
-        Key: `uploads/${Date.now()}_${fileName}`,
-        Body: blob,
-        ContentType: 'image/jpeg',
-      };
-  
-      try {
-        const uploadResult = await s3.upload(params).promise();
-        console.log('Uploaded to S3:', uploadResult.Location);
-        uploadedImageUrl = uploadResult.Location;
-      } catch (err) {
-        console.error('S3 Upload Error:', err);
-        Alert.alert('Upload Error', 'Failed to upload image to S3.');
-        return;
-      }
-    }
-  
-    const postData = {
-      author: userid,
-      title,
-      desc: description,
-      image_uri: uploadedImageUrl,
-      location, // null if no image
-      createdAt: new Date(),
-      likes: 0, // initialize likes
-      comments: [], // initialize empty comments array
-    };
-    
-  
+
     try {
+      if (imageUri) {
+        const bucketName = 'nxtgm';
+        const fileName = imageUri.split('/').pop();
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+
+        const params = {
+          Bucket: bucketName,
+          Key: `uploads/${Date.now()}_${fileName}`,
+          Body: blob,
+          ContentType: 'image/jpeg',
+        };
+
+        const uploadResult = await s3.upload(params).promise();
+        uploadedImageUrl = uploadResult.Location;
+      }
+
+      const postData = {
+        author: userid,
+        title,
+        desc: description,
+        image_uri: uploadedImageUrl,
+        location,
+        createdAt: new Date(),
+        likes: 0,
+        comments: [],
+      };
+
       const response = await fetch(SERVER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postData),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         Alert.alert('Post Failed', errorData.message || 'Something went wrong');
         return;
       }
-  
+
       const data = await response.json();
-      console.log('Posted:', data.title);
       Alert.alert('Success', data.message || 'Uploaded successfully!');
-      // optionally clear the form
       setTitle('');
       setDescription('');
       setImageUri(null);
+      setLocation(null);
     } catch (error) {
       console.error('Error creating post:', error);
       Alert.alert('Error', 'Failed to create post. Please try again.');
+    } finally {
+      setLoading(false); // hide loader
     }
   };
-    
 
   return (
     <View className="flex-1 bg-[#121212] px-4 py-6">
       {/* <Text className="mb-4 text-xl text-white">Create Post: {userid}</Text> */}
       <View className="mb-[30px] mt-5 flex-row items-center justify-between bg-[#121212]">
-        <View className="w-full flex-row justify-between bg-[#121212] items-center">
+        <View className="w-full flex-row items-center justify-between bg-[#121212]">
           <View className="flex-row items-center">
             <Image
               source={require('../../assets/logo.png')}
@@ -170,6 +164,12 @@ export default function Create() {
       <Pressable onPress={handlePost} className="items-center rounded-xl bg-green-700 p-3">
         <Text className="font-semibold text-white">Post</Text>
       </Pressable>
+      {loading && (
+        <View className="absolute bottom-0 left-0 right-0 top-0 z-50 items-center justify-center bg-black/70">
+          <ActivityIndicator size="large" color="#00ff88" />
+          <Text className="mt-4 text-white">Posting...</Text>
+        </View>
+      )}
     </View>
   );
 }
