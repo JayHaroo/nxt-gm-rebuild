@@ -64,7 +64,7 @@ export default function Profile() {
                 <Pressable
                   key={post._id}
                   onPress={() => navigation.navigate('Post', { postId: post._id,userId: userid, username: username })}
-                  className="rounded-2xl bg-[#1e1e1e] p-4 w-[300px] shadow-md items-center ">
+                  className="rounded-2xl bg-[#1e1e1e] p-4 w-[300px] shadow-md items-center mb-2">
                   <Text className="mb-1 text-lg font-semibold text-white text-center">{post.title}</Text>
                   <Text className="text-gray-400 text-center">{post.desc}</Text>
                 </Pressable>
