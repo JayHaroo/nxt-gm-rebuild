@@ -17,10 +17,9 @@ export default function Post() {
   const [modalVisible, setModalVisible] = useState(false);
   const [owner, setOwner] = useState(false);
   const [comment, setComment] = useState('');
-  const checkIfLiked = (likesArray, username) => {
-    return likesArray?.some((id) => id === username);
+  const checkIfLiked = (likesArray, userId) => {
+    return likesArray?.some((id) => id === userId);
   };
-  
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -30,11 +29,10 @@ export default function Post() {
           const data = await response.json();
           setDetails([data]);
 
-          // Check if current user is the owner
-          setOwner(data.author?.username === username);
+          const isOwner = data.author?.username === username;
+          setOwner(isOwner);
 
-          // Use the function to check if the user has liked the post
-          const liked = checkIfLiked(data.likes, username);
+          const liked = checkIfLiked(data.likes, userId);
           setIsLiked(liked);
 
           console.log('Post details:', postId);
@@ -44,8 +42,10 @@ export default function Post() {
       }
     };
 
-    fetchPost();
-  }, []);
+    if (username && postId) {
+      fetchPost(); // Make sure username is present before fetching
+    }
+  }, [username, postId]);
 
   const deletePost = async () => {
     try {
