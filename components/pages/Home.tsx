@@ -94,7 +94,7 @@ export default function Home() {
                 {post.image_uri && (
                   <Image
                     source={{ uri: post.image_uri }}
-                    className="mt-2 h-[200px] w-full rounded-lg object-cover"
+                    className="mt-2 h-[350px] w-full rounded-lg object-contain"
                   />
                 )}
               </Pressable>
