@@ -186,7 +186,7 @@ app.get('/api/feed/:id', async (req, res) => {
 
 // Upload post
 app.post('/api/upload', async (req, res) => {
-  const { author, title, desc, image_uri, createdAt } = req.body;
+  const { author, title, desc, image_uri, location ,createdAt } = req.body;
 
   if (!author || !title || !desc) {
     return res.status(400).json({ message: 'Title, content, and author are required' });
@@ -198,6 +198,7 @@ app.post('/api/upload', async (req, res) => {
       title,
       desc,
       image_uri,
+      location,
       createdAt: createdAt ? new Date(createdAt) : new Date(),
       likes: [], // 🆕 Initialize as empty array
       comments: [], // 🆕 Initialize as empty array
