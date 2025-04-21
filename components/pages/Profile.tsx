@@ -50,7 +50,7 @@ export default function Profile() {
         <View className="mt-5 items-center justify-between bg-[#121212]">
           <Text className="text-3xl font-bold text-white">{username}</Text>
           <Text className="text-sm font-bold text-white">User ID: {userid}</Text>
-          <Pressable className='bg-red-500 rounded-full mt-5 w-[120px] items-center' onPress={() => navigation.navigate('Login')}>
+          <Pressable className='bg-red-500 rounded-full mt-5 w-[120px] items-center' onPress={() => navigation.navigate('Landing')}>
             <Text className='text-white p-2 font-bold'>Log out</Text>
           </Pressable>
         </View>
