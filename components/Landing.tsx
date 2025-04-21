@@ -29,8 +29,9 @@ export default function Landing() {
 
   return (
     <View className="flex-1 items-center justify-center bg-[#121212]">
-      <View className="top-[-90px] p-[110px]">
+      <View className="top-[-90px] p-[110px] items-center justify-center">
         <Image source={require('../assets/logo-with-text.png')} className="object-contain" />
+        <Image source={require('../assets/adaptive-icon.png')} className='object-contain w-[100] h-[100]' />
       </View>
 
       <View className="flex items-center">
