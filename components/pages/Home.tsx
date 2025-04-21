@@ -37,7 +37,7 @@ export default function Home() {
   const handlePostPress = (post) => {
     try {
       const postId = post._id;
-      navigation.navigate('Post', { postId, userId: userid , username: username });
+      navigation.navigate('Post', { postId, userId: userid, username: username });
     } catch (error) {
       console.error('Error fetching post:', error);
     }
@@ -70,9 +70,7 @@ export default function Home() {
         </Pressable>
       </View>
       <View className="w-full bg-[#121212]">
-        <Text className="mb-2 mt-2 text-center text-[20px] font-extrabold text-white">
-          Feed:
-        </Text>
+        <Text className="mb-2 mt-2 text-center text-[20px] font-extrabold text-white">Feed:</Text>
       </View>
 
       <ScrollView
@@ -83,7 +81,7 @@ export default function Home() {
         }>
         <View className="flex-1 items-center justify-center bg-[#121212]">
           <View className="mt-5 w-full px-4">
-            {posts.map((post, index) => (
+            {[...posts].reverse().map((post, index) => (
               <Pressable
                 key={index}
                 onPress={() => handlePostPress(post)}
