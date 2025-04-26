@@ -7,8 +7,8 @@ import SearchableDropdown from 'components/elements/Dropdown';
 
 export default function Create() {
   AWS.config.update({
-    accessKeyId: 'AKIAWIWZF6E3OPBBARKA',
-    secretAccessKey: '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',
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
     region: 'ap-southeast-2',
   });
   const s3 = new AWS.S3();
