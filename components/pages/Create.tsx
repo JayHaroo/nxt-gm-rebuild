@@ -1,10 +1,20 @@
-import { View, Text, Pressable, TextInput, Image, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  TextInput,
+  Image,
+  Alert,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import * as ImagePicker from 'expo-image-picker';
 import SearchableDropdown from 'components/elements/Dropdown';
-import { accessKeyId , secretAccessKey } from '@env'
+import { accessKeyId, secretAccessKey } from '@env';
 
 export default function Create() {
   AWS.config.update({
@@ -130,47 +140,51 @@ export default function Create() {
         </View>
       </View>
 
-      <TextInput
-        placeholder="Enter Title"
-        placeholderTextColor="#aaa"
-        value={title}
-        onChangeText={setTitle}
-        className="mb-4 rounded-xl bg-[#1e1e1e] p-3 text-white"
-      />
+      <KeyboardAvoidingView>
+        <ScrollView>
+          <TextInput
+            placeholder="Enter Title"
+            placeholderTextColor="#aaa"
+            value={title}
+            onChangeText={setTitle}
+            className="mb-4 rounded-xl bg-[#1e1e1e] p-3 text-white"
+          />
 
-      <TextInput
-        placeholder="Enter Post Description"
-        placeholderTextColor="#aaa"
-        value={description}
-        onChangeText={setDescription}
-        multiline
-        numberOfLines={4}
-        className="mb-4 h-32 rounded-xl bg-[#1e1e1e] p-3 text-white"
-      />
+          <TextInput
+            placeholder="Enter Post Description"
+            placeholderTextColor="#aaa"
+            value={description}
+            onChangeText={setDescription}
+            multiline
+            numberOfLines={4}
+            className="mb-4 h-32 rounded-xl bg-[#1e1e1e] p-3 text-white"
+          />
 
-      <Pressable onPress={pickImage} className="mb-4 items-center rounded-xl bg-[#2e2e2e] p-3">
-        <Text className="text-white">Pick an Image (Optional)</Text>
-      </Pressable>
+          <Pressable onPress={pickImage} className="mb-4 items-center rounded-xl bg-[#2e2e2e] p-3">
+            <Text className="text-white">Pick an Image (Optional)</Text>
+          </Pressable>
 
-      {imageUri && (
-        <Image
-          source={{ uri: imageUri }}
-          className="mb-4 h-[300px] w-full rounded-xl"
-          resizeMode="cover"
-        />
-      )}
+          {imageUri && (
+            <Image
+              source={{ uri: imageUri }}
+              className="mb-4 h-[300px] w-full rounded-xl"
+              resizeMode="cover"
+            />
+          )}
 
-      <SearchableDropdown onSelect={(location) => setLocation(location)} />
+          <SearchableDropdown onSelect={(location) => setLocation(location)} />
 
-      <Pressable onPress={handlePost} className="items-center rounded-xl bg-green-700 p-3">
-        <Text className="font-semibold text-white">Post</Text>
-      </Pressable>
-      {loading && (
-        <View className="absolute bottom-0 left-0 right-0 top-0 z-50 items-center justify-center bg-black/70">
-          <ActivityIndicator size="large" color="#00ff88" />
-          <Text className="mt-4 text-white">Posting...</Text>
-        </View>
-      )}
+          <Pressable onPress={handlePost} className="items-center rounded-xl bg-green-700 p-3">
+            <Text className="font-semibold text-white">Post</Text>
+          </Pressable>
+          {loading && (
+            <View className="absolute bottom-0 left-0 right-0 top-0 z-50 items-center justify-center bg-black/70">
+              <ActivityIndicator size="large" color="#00ff88" />
+              <Text className="mt-4 text-white">Posting...</Text>
+            </View>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, FlatList, Text, Pressable } from 'react-native';
+import { View, TextInput, FlatList, Text, Pressable , KeyboardAvoidingView } from 'react-native';
 import locationsData from '../backend/static/locations.json'; 
 
 // Component
