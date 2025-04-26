@@ -105,6 +105,7 @@ export default function Post() {
         const data = await response.json();
         setComment(''); // Clear the comment input
         Alert.alert('Comment added!');
+        navigation.navigate('Post', { postId: postId, userId: userId , username: username })
       } else {
         console.error('Failed to add comment');
       }
