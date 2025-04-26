@@ -139,8 +139,6 @@ export default function Create() {
           </Pressable>
         </View>
       </View>
-
-      <KeyboardAvoidingView>
         <ScrollView>
           <TextInput
             placeholder="Enter Title"
@@ -184,7 +182,6 @@ export default function Create() {
             </View>
           )}
         </ScrollView>
-      </KeyboardAvoidingView>
     </View>
   );
 }
