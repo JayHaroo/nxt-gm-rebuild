@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import * as ImagePicker from 'expo-image-picker';
 import SearchableDropdown from 'components/elements/Dropdown';
+import { accessKeyId , secretAccessKey } from '@env'
 
 export default function Create() {
   AWS.config.update({
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey,
+    accessKeyId: accessKeyId,
+    secretAccessKey: secretAccessKey,
     region: 'ap-southeast-2',
   });
   const s3 = new AWS.S3();

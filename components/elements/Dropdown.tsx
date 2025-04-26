@@ -1,30 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, FlatList, Text, Pressable } from 'react-native';
+import locationsData from '../backend/static/locations.json'; 
 
 // Component
-export default function SearchableDropdown({ onSelect }) {
+export default function SearchableDropdown({ onSelect }: { onSelect: (location: string) => void }) {
   const [query, setQuery] = useState('');
-  const [filtered, setFiltered] = useState([]);
-  const [locations, setLocations] = useState([]);
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const [locations, setLocations] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Load locations from local JSON file
+  // Load locations from imported JSON
   useEffect(() => {
-    const loadLocations = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/static/locations.json'); // Or your server IP
-        const json = await response.json();
-        setLocations(json.locations); // Assuming JSON structure is { locations: [...] }
-      } catch (error) {
-        console.error('Failed to load locations:', error);
-      }
-    };
-
-    loadLocations();
+    setLocations(locationsData.locations); // Assuming JSON structure is { locations: [...] }
   }, []);
 
   // Filter logic
-  const handleSearch = (text) => {
+  const handleSearch = (text: string) => {
     setQuery(text);
     if (text.length > 0) {
       const results = locations.filter((item) =>
@@ -38,7 +29,7 @@ export default function SearchableDropdown({ onSelect }) {
     }
   };
 
-  const handleSelect = (location) => {
+  const handleSelect = (location: string) => {
     setQuery(location);
     setShowDropdown(false);
     onSelect(location); // send selected location to parent
