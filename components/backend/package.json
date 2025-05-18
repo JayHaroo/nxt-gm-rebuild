@@ -10,4 +10,7 @@
   "author": "",
   "license": "ISC",
   "description": ""
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
 }
