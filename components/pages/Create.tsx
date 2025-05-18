@@ -56,7 +56,7 @@ export default function Create() {
     }
   };
 
-  const SERVER_URL = 'http://192.168.56.1:3000/api/upload';
+  const SERVER_URL = 'https://nxtgm-server.onrender.com/api/upload';
 
   const handlePost = async () => {
     if (!title || !description) {

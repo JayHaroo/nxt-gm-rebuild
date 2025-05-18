@@ -4,7 +4,7 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const SERVER_URL = 'http://192.168.56.1:3000/api/register';
+  const SERVER_URL = 'https://nxtgm-server.onrender.com/api/register';
 
   const handleRegister = async () => {
     if (!username || !password) {

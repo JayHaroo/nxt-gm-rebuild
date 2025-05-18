@@ -17,7 +17,7 @@ export default function Profile() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`http://192.168.56.1:3000/api/post/${userid}`);
+      const response = await fetch(`https://nxtgm-server.onrender.com/api/post/${userid}`);
       const data = await response.json();
       setPosts(data);
     } catch (error) {

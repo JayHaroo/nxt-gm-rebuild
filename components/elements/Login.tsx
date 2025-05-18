@@ -7,7 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const SERVER_URL = 'http://192.168.56.1:3000/api/login'; // Replace with your IP
+  const SERVER_URL = 'https://nxtgm-server.onrender.com/api/login'; // Replace with your IP
 
   const handleLogin = async () => {
     if (!username || !password) {

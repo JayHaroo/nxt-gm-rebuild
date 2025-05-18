@@ -24,7 +24,7 @@ export default function Post() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://192.168.56.1:3000/api/feed/${postId}`);
+        const response = await fetch(`https://nxtgm-server.onrender.com/api/feed/${postId}`);
         if (response.ok) {
           const data = await response.json();
           setDetails([data]);
