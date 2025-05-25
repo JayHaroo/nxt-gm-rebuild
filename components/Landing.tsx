@@ -29,23 +29,18 @@ export default function Landing() {
 
   return (
     <View className="flex-1 items-center justify-center bg-[#121212]">
-      <View className="top-[-90px] p-[110px] items-center justify-center">
+      <View className="top-[-160px] p-[110px] items-center justify-center">
         <Image source={require('../assets/logo-with-text.png')} className="object-contain" />
         <Image source={require('../assets/adaptive-icon.png')} className='object-contain w-[100] h-[100]' />
       </View>
 
-      <View className="flex items-center">
+      <View className="flex items-center mb-[-150]">
         <Pressable
-          className="mt-5 w-[160px] items-center rounded-xl bg-green-700"
+          className="mt-5 w-[200px] items-center rounded-xl bg-green-700 mb-2"
           onPress={openLogin}
         >
-          <Text className="p-3 text-white">Login</Text>
+          <Text className="p-4 text-white">Login</Text>
         </Pressable>
-
-        <View className="mb-5 items-center">
-          <Text className="top-3 z-10 w-[30px] bg-[#121212] text-center text-white">OR</Text>
-          <View className="z-0 w-[200px] border border-white" />
-        </View>
 
         <Pressable onPress={openRegister}>
           <Text className="text-white">Join the community</Text>
