@@ -60,12 +60,12 @@ export default function Home() {
         </View>
         <Pressable
           onPress={() => navigation.navigate('Create', { userid: userid })}
-          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
+          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle rounded-xl">
           <Ionicons name="create-outline" size={24} color="white" />
         </Pressable>
         <Pressable
           onPress={goBack}
-          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle">
+          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle rounded-xl">
           <Entypo name="back" size={24} color="white" />
         </Pressable>
       </View>
