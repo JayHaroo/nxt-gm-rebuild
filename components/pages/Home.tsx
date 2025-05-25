@@ -46,28 +46,30 @@ export default function Home() {
   return (
     <>
       <View className="flex-row items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-        <View className="flex-row items-center">
+        <View className="flex-row items-center max-w-12/12">
           <Image
             source={require('../../assets/logo.png')}
-            className="h-[8px] w-[100px] mr-1 object-contain"
+            className="mr-1 h-[8px] w-[100px] object-contain"
           />
           <Pressable
             onPress={() => navigation.navigate('Profile', { userid: userid, username: username })}>
-            <Text className="mr-5 p-3 max-w-8/12 text-white">
+            <Text className="max-w-8/12 p-3 text-white">
               Welcome! {username ? username : 'Loading...'}
             </Text>
           </Pressable>
         </View>
-        <Pressable
-          onPress={() => navigation.navigate('Create', { userid: userid })}
-          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle rounded-xl">
-          <Ionicons name="create-outline" size={24} color="white" />
-        </Pressable>
-        <Pressable
-          onPress={goBack}
-          className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded bg-green-700 align-middle rounded-xl">
-          <Entypo name="back" size={24} color="white" />
-        </Pressable>
+        <View className='flex-row'>
+          <Pressable
+            onPress={() => navigation.navigate('Create', { userid: userid })}
+            className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded rounded-xl bg-green-700 align-middle">
+            <Ionicons name="create-outline" size={24} color="white" />
+          </Pressable>
+          <Pressable
+            onPress={goBack}
+            className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded rounded-xl bg-green-700 align-middle">
+            <Entypo name="back" size={24} color="white" />
+          </Pressable>
+        </View>
       </View>
       <View className="w-full bg-[#121212]">
         <Text className="mb-2 mt-2 text-center text-[20px] font-extrabold text-white">Feed:</Text>
