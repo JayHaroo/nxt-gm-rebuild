@@ -49,11 +49,11 @@ export default function Home() {
         <View className="flex-row items-center">
           <Image
             source={require('../../assets/logo.png')}
-            className="h-[8px] w-[100px] object-contain"
+            className="h-[8px] w-[100px] mr-1 object-contain"
           />
           <Pressable
             onPress={() => navigation.navigate('Profile', { userid: userid, username: username })}>
-            <Text className="mr-5 p-3 text-white">
+            <Text className="mr-5 p-3 max-w-8/12 text-white">
               Welcome! {username ? username : 'Loading...'}
             </Text>
           </Pressable>
