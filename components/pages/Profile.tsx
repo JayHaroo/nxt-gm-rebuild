@@ -1,8 +1,8 @@
 import { View, Text, Pressable, Image, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useEffect, useState } from 'react';
+import { NXTGM_API } from '@env'; // Ensure you have this in your .env file
 
 export default function Profile() {
   const route = useRoute();
@@ -17,7 +17,8 @@ export default function Profile() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`https://nxtgm-server.onrender.com/api/post/${userid}`);
+      const response = await fetch()
+      const response = await fetch(`${NXTGM_API}/api/post/${userid}`);
       const data = await response.json();
       setPosts(data);
     } catch (error) {

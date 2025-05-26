@@ -49,7 +49,7 @@ export default function Post() {
 
   const deletePost = async () => {
     try {
-      const response = await fetch(`http://192.168.56.1:3000/api/delete/${postId}`, {
+      const response = await fetch(`https://nxtgm-server.onrender.com/api/delete/${postId}`, {
         method: 'DELETE',
       });
 
@@ -67,7 +67,7 @@ export default function Post() {
   // Like/Unlike function
   const toggleLike = async () => {
     try {
-      const response = await fetch(`http://192.168.56.1:3000/api/like/${postId}`, {
+      const response = await fetch(`https://nxtgm-server.onrender.com/api/like/${postId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }), // Assuming username is used as user ID
@@ -92,7 +92,7 @@ export default function Post() {
     }
 
     try {
-      const response = await fetch(`http://192.168.56.1:3000/api/comment/${postId}`, {
+      const response = await fetch(`https://nxtgm-server.onrender.com/api/comment/${postId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
