@@ -72,7 +72,7 @@ export default function Login() {
       />
       {isLoading ? (
         <View className="w-[200px] items-center rounded-xl bg-green-700">
-          <ActivityIndicator className='p-3' color="ffffff"/>
+          <ActivityIndicator className='p-3' color="#ffffff"/>
         </View>
       ) : (
         <Pressable className="w-[200px] items-center rounded-xl bg-green-700" onPress={handleLogin}>
