@@ -1,10 +1,12 @@
 import { View, TextInput, Text, Pressable, Alert } from 'react-native';
 import { useState } from 'react';
+import { NXTGM_API } from '@env'; // Ensure you have this in your .env file
+
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const SERVER_URL = 'https://nxtgm-server.onrender.com/api/register';
+  const SERVER_URL = `${NXTGM_API}/api/register`;
 
   const handleRegister = async () => {
     if (!username || !password) {

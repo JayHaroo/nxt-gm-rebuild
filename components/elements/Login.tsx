@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NXTGM_API } from '@env'; // Ensure you have this in your .env file
+import { NXTGM_API } from '@env';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -9,10 +9,11 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
-  const SERVER_URL = `${NXTGM_API}/api/login`; 
+  const SERVER_URL = `${NXTGM_API}api/login`; 
 
   const handleLogin = async () => {
     setIsLoading(true)
+    console.log(SERVER_URL)
     if (!username || !password) {
       Alert.alert('Error', 'Please enter email and password');
       return;

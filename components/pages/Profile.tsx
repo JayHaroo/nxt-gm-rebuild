@@ -17,7 +17,6 @@ export default function Profile() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch()
       const response = await fetch(`${NXTGM_API}/api/post/${userid}`);
       const data = await response.json();
       setPosts(data);

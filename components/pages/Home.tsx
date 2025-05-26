@@ -19,7 +19,7 @@ export default function Home() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`${NXTGM_API}/api/feed`);
+      const response = await fetch(`${NXTGM_API}api/feed`);
       const data = await response.json();
       setPosts(data);
     } catch (error) {
