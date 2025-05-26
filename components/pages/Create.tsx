@@ -15,6 +15,7 @@ import AWS from 'aws-sdk';
 import * as ImagePicker from 'expo-image-picker';
 import SearchableDropdown from 'components/elements/Dropdown';
 import { accessKeyId, secretAccessKey } from '@env';
+import { NXTGM_API } from '@env';
 
 export default function Create() {
   AWS.config.update({
@@ -56,7 +57,7 @@ export default function Create() {
     }
   };
 
-  const SERVER_URL = 'https://nxtgm-server.onrender.com/api/upload';
+  const SERVER_URL = `${NXTGM_API}api/upload`;
 
   const handlePost = async () => {
     if (!title || !description) {
