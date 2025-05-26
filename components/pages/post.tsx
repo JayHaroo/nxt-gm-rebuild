@@ -106,7 +106,7 @@ export default function Post() {
         const data = await response.json();
         setComment(''); // Clear the comment input
         Alert.alert('Comment added!');
-        navigation.navigate('Post', { postId: postId, userId: userId , username: username })
+        navigation.navigate('Post', { postId: postId, userId: userId, username: username });
       } else {
         console.error('Failed to add comment');
       }
@@ -121,14 +121,14 @@ export default function Post() {
     <>
       <View className="h-full items-center bg-[#121212] px-4 py-2 pt-10">
         <View className="mb-5 flex-row items-center justify-between bg-[#121212]">
-          <View className="w-full flex-row justify-between bg-[#121212] items-center">
+          <View className="w-full flex-row items-center justify-between bg-[#121212]">
             <View className="flex-row items-center">
               <Image
                 source={require('../../assets/logo.png')}
                 className="h-[8px] w-[100px] object-contain"
               />
             </View>
-            <Text className='text-center text-xl font-extrabold text-white'>Post Details:</Text>
+            <Text className="text-center text-xl font-extrabold text-white">Post Details:</Text>
             <Pressable
               onPress={goBack}
               className="mr-2 h-[50px] w-[50px] items-center justify-center rounded bg-green-700">
@@ -171,12 +171,13 @@ export default function Post() {
                       onRequestClose={() => setModalVisible(false)}>
                       <View className="flex-1 items-center justify-center bg-black bg-opacity-25">
                         <View className="w-[300px] rounded-lg bg-[#121212] p-4">
-                          <Text className="text-white">Edit Post</Text>
+                          <Text className="text-white mb-2 border-b border-white pb-2 text-bold">Edit Post</Text>
                           <Pressable
                             onPress={() => {
                               setModalVisible(false);
                               Alert.alert('Post edited!');
-                            }}>
+                            }}
+                            className="mb-2 border-b border-gray-600 pb-2">
                             <Text className="text-green-700">Edit</Text>
                           </Pressable>
                           <Pressable
@@ -185,13 +186,15 @@ export default function Post() {
                               await deletePost();
                               Alert.alert('Post deleted!');
                               navigation.goBack(); // Optional: go back after deletion
-                            }}>
+                            }}
+                            className="mb-2 border-b border-gray-600 pb-2">
                             <Text className="text-red-700">Delete</Text>
                           </Pressable>
                           <Pressable
                             onPress={() => {
                               setModalVisible(false);
-                            }}>
+                            }}
+                            className="mb-2 border-b border-gray-600 pb-2">
                             <Text className="text-yellow-700">Close</Text>
                           </Pressable>
                         </View>
@@ -201,11 +204,11 @@ export default function Post() {
                   <Text className="font-bold text-gray-400">
                     Posted By: {detail.author?.username} at {formattedDate}
                   </Text>
-                  {
-                    detail.location && (
-                      <Text className="text-center text-[15px] text-white">Event Location: {detail.location}</Text>
-                    ) 
-                  }
+                  {detail.location && (
+                    <Text className="text-center text-[15px] text-white">
+                      Event Location: {detail.location}
+                    </Text>
+                  )}
                   <Text className="p-7 pt-5 text-center text-[20px] text-white">{detail.desc}</Text>
                   {detail.image_uri && (
                     <Image
