@@ -3,6 +3,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState, useEffect, useCallback } from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function Home() {
   const route = useRoute();
@@ -46,19 +47,18 @@ export default function Home() {
   return (
     <>
       <View className="flex-row items-center justify-between bg-[#121212] px-4 py-2 pt-10">
-        <View className="flex-row items-center max-w-12/12">
+        <View className="max-w-12/12 flex-row items-center">
           <Image
             source={require('../../assets/logo.png')}
             className="mr-1 h-[8px] w-[100px] object-contain"
           />
-          <Pressable
-            onPress={() => navigation.navigate('Profile', { userid: userid, username: username })}>
-            <Text className="max-w-8/12 p-3 text-white">
-              Welcome! {username ? username : 'Loading...'}
-            </Text>
-          </Pressable>
         </View>
-        <View className='flex-row'>
+        <View className="flex-row">
+          <Pressable
+            className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded rounded-xl bg-green-700 align-middle"
+            onPress={() => navigation.navigate('Profile', { userid: userid, username: username })}>
+            <FontAwesome name="user-circle" size={24} color="white" />
+          </Pressable>
           <Pressable
             onPress={() => navigation.navigate('Create', { userid: userid })}
             className="mr-2 h-[50px] w-[50px] items-center items-center justify-center rounded rounded-xl bg-green-700 align-middle">
