@@ -89,9 +89,13 @@ export default function Home() {
                 key={index}
                 onPress={() => handlePostPress(post)}
                 className="mb-4 rounded-xl bg-[#303030] p-4">
-                <Text className="text-[20px] font-bold text-white">{post.title}</Text>
-                <Text className="text-gray-400">{post.desc}</Text>
-                <Text className="text-gray-400">Posted By {post.author?.username}</Text>
+                <View className="flex-row items-center justify-between">
+                  <Text className="text-[25px] font-bold text-white">{post.title}</Text>
+                  <Text className="text-gray-400 text-[10px]">Posted by: {post.author?.username}</Text>
+                </View>
+                <View className='border-b border-[#646464] pb-2 mb-2' />
+                <Text className="text-white text-[17px]">{post.desc}</Text>
+                
                 {post.image_uri && (
                   <Image
                     source={{ uri: post.image_uri }}
