@@ -7,7 +7,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const SERVER_URL = `${NXTGM_API}api/register`;
+  const SERVER_URL = `${NXTGM_API}/api/register`;
 
   const handleRegister = async () => {
     setIsLoading(true);
