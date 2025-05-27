@@ -49,8 +49,8 @@ export default function Landing() {
         </Pressable>
       </View>
 
-      <View className="z-0 absolute top-[450]">
-        <Image source={require('../assets/grad.png')} className="z-0" />
+      <View className="z-0 absolute top-[450] w-full">
+        <Image source={require('../assets/grad.png')} className="z-0 object-cover w-[450px]" />
       </View>
 
       {visible && (
